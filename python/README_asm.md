@@ -1,6 +1,6 @@
 # Язык программирования Asm
 
-> Простая реализация языка asm. Другие детали реализации см. в [./README.md](./README.md).
+> Простая реализация языка asm. Другие детали реализации см. в [./README.md](README.md).
 
 Синтаксис в расширенной БНФ.
 
@@ -67,13 +67,13 @@ jmp label   ; --> `jmp 123`, где 123 - номер инструкции пос
 
 В программе не может быть дублирующихся меток, определенных в разных местах с одним именем.
 
-Пример кода на Asm см. в файле [./examples/cat.asm](./examples/cat.asm).
+Пример кода на Asm см. в файле [./examples/cat.asm](examples/cat.asm).
 
 ## Транслятор
 
 Интерфейс командной строки: `translator_asm.py <input_file> <target_file>`
 
-Реализован в модуле [translator_asm](./translator_asm.py)
+Реализован в модуле [translator_asm](translator_asm.py)
 
 Трансляция реализуется в два прохода:
 
@@ -85,5 +85,5 @@ jmp label   ; --> `jmp 123`, где 123 - номер инструкции пос
 
 Тестирование выполняется при помощи golden test-ов.
 
-1. Тесты для языка `asm` реализованы в: [golden_asm_test.py](./golden_asm_test.py). Конфигурации:
+1. Тесты для языка `asm` реализованы в: [golden_asm_test.py](golden_asm_test.py). Конфигурации:
     - [golden/cat_asm.yml](golden/cat_asm.yml)

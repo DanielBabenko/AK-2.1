@@ -52,7 +52,7 @@ comment ::= <any symbols except: "><+-.,[]">
 
 ## Язык программирования Asm
 
-Альтернативный вариант, реализующий язык программирования Asm вместо Brainfuck см. в файле [./README_asm.md](./README_asm.md).
+Альтернативный вариант, реализующий язык программирования Asm вместо Brainfuck см. в файле [./README_asm.md](README_asm.md).
 
 ## Организация памяти
 
@@ -118,7 +118,7 @@ comment ::= <any symbols except: "><+-.,[]">
 - `arg` -- аргумент (может отсутствовать);
 - `term` -- информация о связанном месте в исходном коде (если есть).
 
-Типы данных в модуле [isa](./isa.py), где:
+Типы данных в модуле [isa](isa.py), где:
 
 - `Opcode` -- перечисление кодов операций;
 - `Term` -- структура для описания значимого фрагмента кода исходной программы.
@@ -127,7 +127,7 @@ comment ::= <any symbols except: "><+-.,[]">
 
 Интерфейс командной строки: `translator.py <input_file> <target_file>`
 
-Реализовано в модуле: [translator](./translator.py)
+Реализовано в модуле: [translator](translator.py)
 
 Этапы трансляции (функция `translate`):
 
@@ -154,7 +154,7 @@ comment ::= <any symbols except: "><+-.,[]">
 
 Интерфейс командной строки: `machine.py <machine_code_file> <input_file>`
 
-Реализовано в модуле: [machine](./machine.py).
+Реализовано в модуле: [machine](machine.py).
 
 ### DataPath
 
@@ -272,12 +272,12 @@ comment ::= <any symbols except: "><+-.,[]">
 
 Тестирование выполняется при помощи golden test-ов.
 
-1. Тесты для языка `bf` реализованы в: [golden_bf_test.py](./golden_bf_test.py). Конфигурации:
+1. Тесты для языка `bf` реализованы в: [golden_bf_test.py](golden_bf_test.py). Конфигурации:
     - [golden/cat_bf.yml](golden/cat_bf.yml)
     - [golden/hello_bf.yml](golden/hello_bf.yml)
-1. Тесты для языка `asm` реализованы в: [golden_asm_test.py](./golden_asm_test.py). Конфигурации:
+1. Тесты для языка `asm` реализованы в: [golden_asm_test.py](golden_asm_test.py). Конфигурации:
     - [golden/cat_asm.yml](golden/cat_asm.yml)
-1. Традиционные интеграционные тесты: [integration_test.py](./integration_test.py) (Depricated).
+1. Традиционные интеграционные тесты: [integration_test.py](integration_test.py) (Depricated).
 
 Запустить тесты: `poetry run pytest . -v`
 
