@@ -287,9 +287,6 @@ class ControlUnit:
         return
 
     def decode_and_execute_control_flow_instruction(self, instr, opcode, phase):
-        """Декодировать и выполнить инструкцию управления потоком исполнения. В
-        случае успеха -- вернуть `True`, чтобы перейти к следующей инструкции.
-        """
         if opcode is Opcode.HALT:
             raise StopIteration()
 
@@ -327,21 +324,15 @@ class ControlUnit:
 
             return True
 
-        if opcode is Opcode.JZ:
-            return self.execute_jz(instr, phase)
+        if (opcode is Opcode.JZ) | (opcode is Opcode.JS):
+            return self.execute_flag(instr, opcode, phase)
 
-        if opcode is Opcode.JNZ:
-            return self.execute_jnz(instr, phase)
-
-        if opcode is Opcode.JS:
-            return self.execute_jz(instr, phase)
-
-        if opcode is Opcode.JNS:
-            return self.execute_jnz(instr, phase)
+        if (opcode is Opcode.JNZ) | (opcode is Opcode.JNS):
+            return self.execute_non_flag(instr, opcode, phase)
 
         return False  # чтобы понимать, что текущая инструкция не управляет потоком выполнения
 
-    def execute_jz(self, instr, phase):
+    def execute_flag(self, instr, opcode, phase):
         addr, reg = instr["arg"]
         # в 2 такта
         if phase == 1:
@@ -352,7 +343,7 @@ class ControlUnit:
             self.tick()
             return None
 
-        if self.data_path.zero():
+        if (self.data_path.zero() & (opcode is Opcode.JZ)) | (self.data_path.sign() & (opcode is Opcode.JS)):
             self.data_path.signal_latch_data_register(addr)
             self.data_path.signal_latch_program_counter(sel_next=False)
         else:
@@ -361,7 +352,7 @@ class ControlUnit:
 
         return True
 
-    def execute_jnz(self, instr, phase):
+    def execute_non_flag(self, instr, opcode, phase):
         addr, reg = instr["arg"]
         # в 2 такта
         if phase == 1:
@@ -372,47 +363,7 @@ class ControlUnit:
             self.tick()
             return None
 
-        if not self.data_path.zero():
-            self.data_path.signal_latch_data_register(addr)
-            self.data_path.signal_latch_program_counter(sel_next=False)
-        else:
-            self.data_path.signal_latch_program_counter(sel_next=True)
-        self.tick()
-
-        return True
-
-    def execute_js(self, instr, phase):
-        addr, reg = instr["arg"]
-        # в 2 такта
-        if phase == 1:
-            self.data_path.signal_alu_l(reg)
-            self.data_path.signal_alu_r("0")
-
-            self.data_path.signal_alu_op(Opcode.ADD)
-
-            self.tick()
-            return None
-
-        if self.data_path.sign():
-            self.data_path.signal_latch_data_register(addr)
-            self.data_path.signal_latch_program_counter(sel_next=False)
-        else:
-            self.data_path.signal_latch_program_counter(sel_next=True)
-        self.tick()
-
-        return True
-
-    def execute_jns(self, instr, phase):
-        addr, reg = instr["arg"]
-        if phase == 1:
-            self.data_path.signal_alu_l(reg)
-            self.data_path.signal_alu_r("0")
-            self.data_path.signal_alu_op(Opcode.ADD)
-
-            self.tick()
-            return None
-
-        if not self.data_path.sign():
+        if (not self.data_path.zero() & (opcode is Opcode.JNZ)) | (not self.data_path.sign() & (opcode is Opcode.JNS)):
             self.data_path.signal_latch_data_register(addr)
             self.data_path.signal_latch_program_counter(sel_next=False)
         else:
