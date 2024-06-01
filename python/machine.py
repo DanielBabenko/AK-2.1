@@ -36,7 +36,8 @@ class ALU:
     def calc(self, op: Opcode, left: int, right: int) -> int:
         assert op in self.operations, f"Unknown operation: {op}"
         self.res = self.operations.get(op)(left, right)
-        self.zero = self.res == 0
+        self.zero = (self.res == 0)
+        self.sign = (self.res < 0)
         return self.res
 
 
@@ -332,6 +333,12 @@ class ControlUnit:
         if opcode is Opcode.JNZ:
             return self.execute_jnz(instr, phase)
 
+        if opcode is Opcode.JS:
+            return self.execute_jz(instr, phase)
+
+        if opcode is Opcode.JNS:
+            return self.execute_jnz(instr, phase)
+
         return False  # чтобы понимать, что текущая инструкция не управляет потоком выполнения
 
     def execute_jz(self, instr, phase):
@@ -340,8 +347,6 @@ class ControlUnit:
         if phase == 1:
             self.data_path.signal_alu_l(reg)
             self.data_path.signal_alu_r("0")
-
-            # выполняется сложение с нулём, чтобы потом проверить результат на zero_flag
             self.data_path.signal_alu_op(Opcode.ADD)
 
             self.tick()
@@ -362,8 +367,6 @@ class ControlUnit:
         if phase == 1:
             self.data_path.signal_alu_l(reg)
             self.data_path.signal_alu_r("0")
-
-            # выполняется сложение с нулём, чтобы потом проверить результат на zero_flag
             self.data_path.signal_alu_op(Opcode.ADD)
 
             self.tick()
@@ -385,13 +388,31 @@ class ControlUnit:
             self.data_path.signal_alu_l(reg)
             self.data_path.signal_alu_r("0")
 
-            # выполняется сложение с нулём, чтобы потом проверить результат на zero_flag
             self.data_path.signal_alu_op(Opcode.ADD)
 
             self.tick()
             return None
 
-        if self.data_path.zero():
+        if self.data_path.sign():
+            self.data_path.signal_latch_data_register(addr)
+            self.data_path.signal_latch_program_counter(sel_next=False)
+        else:
+            self.data_path.signal_latch_program_counter(sel_next=True)
+        self.tick()
+
+        return True
+
+    def execute_jns(self, instr, phase):
+        addr, reg = instr["arg"]
+        if phase == 1:
+            self.data_path.signal_alu_l(reg)
+            self.data_path.signal_alu_r("0")
+            self.data_path.signal_alu_op(Opcode.ADD)
+
+            self.tick()
+            return None
+
+        if not self.data_path.sign():
             self.data_path.signal_latch_data_register(addr)
             self.data_path.signal_latch_program_counter(sel_next=False)
         else:
