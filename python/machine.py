@@ -373,6 +373,28 @@ class ControlUnit:
 
         return True
 
+    def execute_js(self, instr, phase):
+        addr, reg = instr["arg"]
+        # в 2 такта
+        if phase == 1:
+            self.data_path.signal_alu_l(reg)
+            self.data_path.signal_alu_r("0")
+
+            # выполняется сложение с нулём, чтобы потом проверить результат на zero_flag
+            self.data_path.signal_alu_op(Opcode.ADD)
+
+            self.tick()
+            return None
+
+        if self.data_path.zero():
+            self.data_path.signal_latch_data_register(addr)
+            self.data_path.signal_latch_program_counter(sel_next=False)
+        else:
+            self.data_path.signal_latch_program_counter(sel_next=True)
+        self.tick()
+
+        return True
+
     def execute_print(self, instr, opcode, phase):
         if phase == 1:
             self.data_path.signal_latch_output_register()
