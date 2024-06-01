@@ -330,12 +330,6 @@ class ControlUnit:
         if (opcode is Opcode.JNZ) | (opcode is Opcode.JNS):
             return self.execute_non_flag(instr, opcode, phase)
 
-        if (opcode is Opcode.JZ) | (opcode is Opcode.JS):
-            return self.execute_flag(instr, opcode, phase)
-
-        if (opcode is Opcode.JNZ) | (opcode is Opcode.JNS):
-            return self.execute_non_flag(instr, opcode, phase)
-
         return False  # чтобы понимать, что текущая инструкция не управляет потоком выполнения
 
     def execute_flag(self, instr, opcode, phase):
