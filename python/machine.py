@@ -30,6 +30,7 @@ class ALU:
         Opcode.MUL: lambda left, right: left * right,
     }
     zero = None
+    sign = None
     res = None
 
     def calc(self, op: Opcode, left: int, right: int) -> int:
@@ -228,6 +229,10 @@ class DataPath:
     def zero(self):
         """Флаг нуля. Необходим для условных переходов."""
         return self.alu.zero
+
+    def sign(self):
+        """Sign Flag. Необходим для условных переходов."""
+        return self.alu.sign
 
 
 class ControlUnit:
