@@ -13,14 +13,13 @@ in_source: |-
     js break,r3    ; if r3 < 0 --> break
     add r3,r1,r2
     mod r1,r3,2   ; r3 % 2
-    jz add_new_member,r1  ; if (r3 % 2) != 0 --> continue
+    jnz add_new_member,r1  ; if (r3 % 2) != 0 --> continue
   
-    mov r1,r2
-    mov r2,r3
-    jmp loop
+    add rs,rs,r3 ; else sum += r3
   
     add_new_member:
-      add rs,rs,r3
+      mov r1,r2
+      mov r2,r3
   
     jmp loop
 
@@ -351,7 +350,7 @@ out_stdout: |
   source LoC: 26 code instr: 14
   ============================================================
 
-  instr_counter:  275 ticks: 338
+  instr_counter:  254 ticks: 317
 out_code: |-
   [0,
    0,
@@ -461,7 +460,7 @@ out_code: |-
    {"index": 5, "opcode": "js", "arg": [113, "r3"], "term": [12, 0, "js break,r3"]},
    {"index": 6, "opcode": "add", "arg": ["r3", "r1", "r2"], "term": [13, 0, "add r3,r1,r2"]},
    {"index": 7, "opcode": "mod", "arg": ["r1", "r3", "2"], "term": [14, 0, "mod r1,r3,2"]},
-   {"index": 8, "opcode": "jz", "arg": [110, "r1"], "term": [15, 0, "jz add_new_member,r1"]},
+   {"index": 8, "opcode": "jnz", "arg": [110, "r1"], "term": [15, 0, "jnz add_new_member,r1"]},
    {"index": 9, "opcode": "add", "arg": ["rs", "rs", "r3"], "term": [17, 0, "add rs,rs,r3"]},
    {"index": 10, "opcode": "mov", "arg": ["r1", "r2"], "term": [20, 0, "mov r1,r2"]},
    {"index": 11, "opcode": "mov", "arg": ["r2", "r3"], "term": [21, 0, "mov r2,r3"]},
