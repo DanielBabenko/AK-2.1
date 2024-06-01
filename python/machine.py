@@ -364,7 +364,10 @@ class ControlUnit:
             return None
 
         #if (not self.data_path.zero() & (opcode is Opcode.JNZ)) | (not self.data_path.sign() & (opcode is Opcode.JNS)):
-        if not self.data_path.zero():
+        if ((not self.data_path.zero()) & (opcode is Opcode.JNZ)):
+            self.data_path.signal_latch_data_register(addr)
+            self.data_path.signal_latch_program_counter(sel_next=False)
+        elif ((not self.data_path.sign()) & (opcode is Opcode.JNS)):
             self.data_path.signal_latch_data_register(addr)
             self.data_path.signal_latch_program_counter(sel_next=False)
         else:
