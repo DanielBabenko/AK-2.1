@@ -1,6 +1,6 @@
 """Golden тесты транслятора ассемблера и машины.
 
-Конфигурационнфе файлы: "golden/*_asm.yml"
+Конфигурационнфе файлы: "goldens/*_asm.yml"
 """
 
 import contextlib
@@ -16,6 +16,8 @@ import translator_asm
 
 @pytest.mark.golden_test("golden/*.yml")
 def test_translator_asm_and_machine(golden, caplog):
+    """Почти полная копия test_translator_and_machine из golden_bf_test. Детали
+    см. там."""
     caplog.set_level(logging.DEBUG)
 
     with tempfile.TemporaryDirectory() as tmpdirname:
