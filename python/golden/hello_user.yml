@@ -422,7 +422,7 @@ out_stdout: |
   source LoC: 53 code instr: 31
   ============================================================
   what is your name? hello KAMIL4ik!
-  instr_counter:  254 ticks: 301
+  instr_counter:  254 ticks: 254
 out_code: |-
   [19,
    119,

@@ -115,7 +115,7 @@ out_stdout: |
   source LoC: 18 code instr: 10
   ============================================================
   hello world!
-  instr_counter:  65 ticks: 78
+  instr_counter:  65 ticks: 65
 out_code: |-
   [12,
    104,

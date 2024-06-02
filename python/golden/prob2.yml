@@ -360,7 +360,7 @@ out_stdout: |
   source LoC: 26 code instr: 14
   ============================================================
 
-  instr_counter:  264 ticks: 327
+  instr_counter:  264 ticks: 264
 out_code: |-
   [0,
    0,

@@ -129,7 +129,7 @@ out_stdout: |
   source LoC: 14 code instr: 9
   ============================================================
   KAMIL
-  instr_counter:  44 ticks: 55
+  instr_counter:  49 ticks: 54
 out_log: |
   DEBUG   machine:simulation    TICK:   0 PC: 100 ADDR:   0 MEM_OUT: 0 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	ei  ('ei'@1:0)
   DEBUG   machine:simulation    TICK:   1 PC: 101 ADDR:   0 MEM_OUT: 0 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jmp 101  ('jmp loop'@3:0)
