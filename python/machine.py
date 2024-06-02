@@ -340,7 +340,6 @@ class ControlUnit:
             self.data_path.signal_alu_r("0")
             self.data_path.signal_alu_op(Opcode.ADD)
 
-            #self.tick()
             return None
 
         if (self.data_path.zero() & (opcode is Opcode.JZ)) | (self.data_path.sign() & (opcode is Opcode.JS)):
@@ -360,7 +359,6 @@ class ControlUnit:
             self.data_path.signal_alu_r("0")
             self.data_path.signal_alu_op(Opcode.ADD)
 
-            #self.tick()
             return None
 
         #if (not self.data_path.zero() & (opcode is Opcode.JNZ)) | (not self.data_path.sign() & (opcode is Opcode.JNS)):

@@ -41,7 +41,7 @@ def translate_stage_1(text: str) -> tuple[dict, dict, list, list]:
             label2command_address[label] = SHIFT + pc
 
             last_label = label
-        elif " " in token:  # токен содержит инструкцию с операндом (отделены пробелом)
+        elif " " in token:
             sub_tokens = token.split(maxsplit=1) if token.startswith(Opcode.ADD_STR.value) else token.split()
             assert len(sub_tokens) == 2, "Invalid instruction: {}".format(token)
             mnemonic, arg = sub_tokens
