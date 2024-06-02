@@ -137,13 +137,14 @@ out_log: |
   DEBUG   machine:simulation    TICK:   2 PC: 103 ADDR:   0 MEM_OUT: 0 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	input  ('input'@7:0)
   DEBUG   machine:signal_wr     input: 'K'
   DEBUG   machine:simulation    TICK:   3 PC: 104 ADDR:   0 MEM_OUT: 75 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jz [108, 'ir']  ('jz break,ir'@8:0)
-  DEBUG   machine:simulation    TICK:   4 PC: 104 ADDR:   0 MEM_OUT: 75 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jz [108, 'ir']  ('jz break,ir'@8:0)
+  DEBUG   machine:simulation    TICK:   3 PC: 104 ADDR:   0 MEM_OUT: 75 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jz [108, 'ir']  ('jz break,ir'@8:0)
+  DEBUG   machine:simulation    TICK:   4 PC: 105 ADDR:   0 MEM_OUT: 75 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	print  ('print'@9:0)
   DEBUG   machine:simulation    TICK:   5 PC: 105 ADDR:   0 MEM_OUT: 75 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	print  ('print'@9:0)
-  DEBUG   machine:simulation    TICK:   6 PC: 105 ADDR:   0 MEM_OUT: 75 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	print  ('print'@9:0)
   DEBUG   machine:signal_output output: '' << 'K'
-  DEBUG   machine:simulation    TICK:   7 PC: 106 ADDR:   0 MEM_OUT: 75 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	ei  ('ei'@10:0)
-  DEBUG   machine:simulation    TICK:   8 PC: 107 ADDR:   0 MEM_OUT: 75 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	iret  ('iret'@11:0)
+  DEBUG   machine:simulation    TICK:   6 PC: 106 ADDR:   0 MEM_OUT: 75 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	ei  ('ei'@10:0)
+  DEBUG   machine:simulation    TICK:   7 PC: 107 ADDR:   0 MEM_OUT: 75 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	iret  ('iret'@11:0)
   DEBUG   machine:execute_iret  STOP HANDLING INTERRUPTION
+  DEBUG   machine:simulation    TICK:   8 PC: 101 ADDR:   0 MEM_OUT: 75 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jmp 101  ('jmp loop'@3:0)
   DEBUG   machine:simulation    TICK:   9 PC: 101 ADDR:   0 MEM_OUT: 75 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jmp 101  ('jmp loop'@3:0)
   DEBUG   machine:simulation    TICK:  10 PC: 101 ADDR:   0 MEM_OUT: 75 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jmp 101  ('jmp loop'@3:0)
   DEBUG   machine:simulation    TICK:  11 PC: 101 ADDR:   0 MEM_OUT: 75 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jmp 101  ('jmp loop'@3:0)
@@ -151,13 +152,14 @@ out_log: |
   DEBUG   machine:simulation    TICK:  12 PC: 103 ADDR:   0 MEM_OUT: 75 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	input  ('input'@7:0)
   DEBUG   machine:signal_wr     input: 'A'
   DEBUG   machine:simulation    TICK:  13 PC: 104 ADDR:   0 MEM_OUT: 65 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jz [108, 'ir']  ('jz break,ir'@8:0)
-  DEBUG   machine:simulation    TICK:  14 PC: 104 ADDR:   0 MEM_OUT: 65 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jz [108, 'ir']  ('jz break,ir'@8:0)
+  DEBUG   machine:simulation    TICK:  13 PC: 104 ADDR:   0 MEM_OUT: 65 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jz [108, 'ir']  ('jz break,ir'@8:0)
+  DEBUG   machine:simulation    TICK:  14 PC: 105 ADDR:   0 MEM_OUT: 65 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	print  ('print'@9:0)
   DEBUG   machine:simulation    TICK:  15 PC: 105 ADDR:   0 MEM_OUT: 65 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	print  ('print'@9:0)
-  DEBUG   machine:simulation    TICK:  16 PC: 105 ADDR:   0 MEM_OUT: 65 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	print  ('print'@9:0)
   DEBUG   machine:signal_output output: 'K' << 'A'
-  DEBUG   machine:simulation    TICK:  17 PC: 106 ADDR:   0 MEM_OUT: 65 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	ei  ('ei'@10:0)
-  DEBUG   machine:simulation    TICK:  18 PC: 107 ADDR:   0 MEM_OUT: 65 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	iret  ('iret'@11:0)
+  DEBUG   machine:simulation    TICK:  16 PC: 106 ADDR:   0 MEM_OUT: 65 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	ei  ('ei'@10:0)
+  DEBUG   machine:simulation    TICK:  17 PC: 107 ADDR:   0 MEM_OUT: 65 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	iret  ('iret'@11:0)
   DEBUG   machine:execute_iret  STOP HANDLING INTERRUPTION
+  DEBUG   machine:simulation    TICK:  18 PC: 101 ADDR:   0 MEM_OUT: 65 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jmp 101  ('jmp loop'@3:0)
   DEBUG   machine:simulation    TICK:  19 PC: 101 ADDR:   0 MEM_OUT: 65 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jmp 101  ('jmp loop'@3:0)
   DEBUG   machine:simulation    TICK:  20 PC: 101 ADDR:   0 MEM_OUT: 65 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jmp 101  ('jmp loop'@3:0)
   DEBUG   machine:simulation    TICK:  21 PC: 101 ADDR:   0 MEM_OUT: 65 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jmp 101  ('jmp loop'@3:0)
@@ -165,13 +167,14 @@ out_log: |
   DEBUG   machine:simulation    TICK:  22 PC: 103 ADDR:   0 MEM_OUT: 65 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	input  ('input'@7:0)
   DEBUG   machine:signal_wr     input: 'M'
   DEBUG   machine:simulation    TICK:  23 PC: 104 ADDR:   0 MEM_OUT: 77 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jz [108, 'ir']  ('jz break,ir'@8:0)
-  DEBUG   machine:simulation    TICK:  24 PC: 104 ADDR:   0 MEM_OUT: 77 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jz [108, 'ir']  ('jz break,ir'@8:0)
+  DEBUG   machine:simulation    TICK:  23 PC: 104 ADDR:   0 MEM_OUT: 77 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jz [108, 'ir']  ('jz break,ir'@8:0)
+  DEBUG   machine:simulation    TICK:  24 PC: 105 ADDR:   0 MEM_OUT: 77 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	print  ('print'@9:0)
   DEBUG   machine:simulation    TICK:  25 PC: 105 ADDR:   0 MEM_OUT: 77 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	print  ('print'@9:0)
-  DEBUG   machine:simulation    TICK:  26 PC: 105 ADDR:   0 MEM_OUT: 77 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	print  ('print'@9:0)
   DEBUG   machine:signal_output output: 'KA' << 'M'
-  DEBUG   machine:simulation    TICK:  27 PC: 106 ADDR:   0 MEM_OUT: 77 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	ei  ('ei'@10:0)
-  DEBUG   machine:simulation    TICK:  28 PC: 107 ADDR:   0 MEM_OUT: 77 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	iret  ('iret'@11:0)
+  DEBUG   machine:simulation    TICK:  26 PC: 106 ADDR:   0 MEM_OUT: 77 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	ei  ('ei'@10:0)
+  DEBUG   machine:simulation    TICK:  27 PC: 107 ADDR:   0 MEM_OUT: 77 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	iret  ('iret'@11:0)
   DEBUG   machine:execute_iret  STOP HANDLING INTERRUPTION
+  DEBUG   machine:simulation    TICK:  28 PC: 101 ADDR:   0 MEM_OUT: 77 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jmp 101  ('jmp loop'@3:0)
   DEBUG   machine:simulation    TICK:  29 PC: 101 ADDR:   0 MEM_OUT: 77 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jmp 101  ('jmp loop'@3:0)
   DEBUG   machine:simulation    TICK:  30 PC: 101 ADDR:   0 MEM_OUT: 77 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jmp 101  ('jmp loop'@3:0)
   DEBUG   machine:simulation    TICK:  31 PC: 101 ADDR:   0 MEM_OUT: 77 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jmp 101  ('jmp loop'@3:0)
@@ -179,13 +182,14 @@ out_log: |
   DEBUG   machine:simulation    TICK:  32 PC: 103 ADDR:   0 MEM_OUT: 77 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	input  ('input'@7:0)
   DEBUG   machine:signal_wr     input: 'I'
   DEBUG   machine:simulation    TICK:  33 PC: 104 ADDR:   0 MEM_OUT: 73 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jz [108, 'ir']  ('jz break,ir'@8:0)
-  DEBUG   machine:simulation    TICK:  34 PC: 104 ADDR:   0 MEM_OUT: 73 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jz [108, 'ir']  ('jz break,ir'@8:0)
+  DEBUG   machine:simulation    TICK:  33 PC: 104 ADDR:   0 MEM_OUT: 73 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jz [108, 'ir']  ('jz break,ir'@8:0)
+  DEBUG   machine:simulation    TICK:  34 PC: 105 ADDR:   0 MEM_OUT: 73 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	print  ('print'@9:0)
   DEBUG   machine:simulation    TICK:  35 PC: 105 ADDR:   0 MEM_OUT: 73 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	print  ('print'@9:0)
-  DEBUG   machine:simulation    TICK:  36 PC: 105 ADDR:   0 MEM_OUT: 73 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	print  ('print'@9:0)
   DEBUG   machine:signal_output output: 'KAM' << 'I'
-  DEBUG   machine:simulation    TICK:  37 PC: 106 ADDR:   0 MEM_OUT: 73 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	ei  ('ei'@10:0)
-  DEBUG   machine:simulation    TICK:  38 PC: 107 ADDR:   0 MEM_OUT: 73 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	iret  ('iret'@11:0)
+  DEBUG   machine:simulation    TICK:  36 PC: 106 ADDR:   0 MEM_OUT: 73 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	ei  ('ei'@10:0)
+  DEBUG   machine:simulation    TICK:  37 PC: 107 ADDR:   0 MEM_OUT: 73 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	iret  ('iret'@11:0)
   DEBUG   machine:execute_iret  STOP HANDLING INTERRUPTION
+  DEBUG   machine:simulation    TICK:  38 PC: 101 ADDR:   0 MEM_OUT: 73 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jmp 101  ('jmp loop'@3:0)
   DEBUG   machine:simulation    TICK:  39 PC: 101 ADDR:   0 MEM_OUT: 73 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jmp 101  ('jmp loop'@3:0)
   DEBUG   machine:simulation    TICK:  40 PC: 101 ADDR:   0 MEM_OUT: 73 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jmp 101  ('jmp loop'@3:0)
   DEBUG   machine:simulation    TICK:  41 PC: 101 ADDR:   0 MEM_OUT: 73 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jmp 101  ('jmp loop'@3:0)
@@ -193,13 +197,14 @@ out_log: |
   DEBUG   machine:simulation    TICK:  42 PC: 103 ADDR:   0 MEM_OUT: 73 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	input  ('input'@7:0)
   DEBUG   machine:signal_wr     input: 'L'
   DEBUG   machine:simulation    TICK:  43 PC: 104 ADDR:   0 MEM_OUT: 76 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jz [108, 'ir']  ('jz break,ir'@8:0)
-  DEBUG   machine:simulation    TICK:  44 PC: 104 ADDR:   0 MEM_OUT: 76 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jz [108, 'ir']  ('jz break,ir'@8:0)
+  DEBUG   machine:simulation    TICK:  43 PC: 104 ADDR:   0 MEM_OUT: 76 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jz [108, 'ir']  ('jz break,ir'@8:0)
+  DEBUG   machine:simulation    TICK:  44 PC: 105 ADDR:   0 MEM_OUT: 76 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	print  ('print'@9:0)
   DEBUG   machine:simulation    TICK:  45 PC: 105 ADDR:   0 MEM_OUT: 76 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	print  ('print'@9:0)
-  DEBUG   machine:simulation    TICK:  46 PC: 105 ADDR:   0 MEM_OUT: 76 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	print  ('print'@9:0)
   DEBUG   machine:signal_output output: 'KAMI' << 'L'
-  DEBUG   machine:simulation    TICK:  47 PC: 106 ADDR:   0 MEM_OUT: 76 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	ei  ('ei'@10:0)
-  DEBUG   machine:simulation    TICK:  48 PC: 107 ADDR:   0 MEM_OUT: 76 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	iret  ('iret'@11:0)
+  DEBUG   machine:simulation    TICK:  46 PC: 106 ADDR:   0 MEM_OUT: 76 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	ei  ('ei'@10:0)
+  DEBUG   machine:simulation    TICK:  47 PC: 107 ADDR:   0 MEM_OUT: 76 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	iret  ('iret'@11:0)
   DEBUG   machine:execute_iret  STOP HANDLING INTERRUPTION
+  DEBUG   machine:simulation    TICK:  48 PC: 101 ADDR:   0 MEM_OUT: 76 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jmp 101  ('jmp loop'@3:0)
   DEBUG   machine:simulation    TICK:  49 PC: 101 ADDR:   0 MEM_OUT: 76 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jmp 101  ('jmp loop'@3:0)
   DEBUG   machine:simulation    TICK:  50 PC: 101 ADDR:   0 MEM_OUT: 76 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jmp 101  ('jmp loop'@3:0)
   DEBUG   machine:simulation    TICK:  51 PC: 101 ADDR:   0 MEM_OUT: 76 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jmp 101  ('jmp loop'@3:0)
@@ -207,6 +212,6 @@ out_log: |
   DEBUG   machine:simulation    TICK:  52 PC: 103 ADDR:   0 MEM_OUT: 76 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	input  ('input'@7:0)
   DEBUG   machine:signal_wr     input: '\x00'
   DEBUG   machine:simulation    TICK:  53 PC: 104 ADDR:   0 MEM_OUT: 0 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jz [108, 'ir']  ('jz break,ir'@8:0)
-  DEBUG   machine:simulation    TICK:  54 PC: 104 ADDR:   0 MEM_OUT: 0 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jz [108, 'ir']  ('jz break,ir'@8:0)
-  DEBUG   machine:simulation    TICK:  55 PC: 108 ADDR:   0 MEM_OUT: 0 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	halt  ('halt'@14:0)
+  DEBUG   machine:simulation    TICK:  53 PC: 104 ADDR:   0 MEM_OUT: 0 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	jz [108, 'ir']  ('jz break,ir'@8:0)
+  DEBUG   machine:simulation    TICK:  54 PC: 108 ADDR:   0 MEM_OUT: 0 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	halt  ('halt'@14:0)
   INFO    machine:simulation    output_buffer: 'KAMIL'
