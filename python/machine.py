@@ -13,9 +13,32 @@
 
 import logging
 import sys
+from typing import ClassVar
 
 from isa import Opcode, read_code
 
+class ALU:
+    """Арифметико-логическое устройство"""
+
+    operations: ClassVar[dict] = {
+        Opcode.INC: lambda left, right: left + 1,
+        Opcode.DEC: lambda left, right: left - 1,
+        Opcode.MOV: lambda left, right: left,
+        Opcode.ADD: lambda left, right: left + right,
+        Opcode.SUB: lambda left, right: left - right,
+        Opcode.MOD: lambda left, right: left % right,
+        Opcode.MUL: lambda left, right: left * right,
+    }
+    zero = None
+    sign = None
+    res = None
+
+    def calc(self, op: Opcode, left: int, right: int) -> int:
+        assert op in self.operations, f"Unknown operation: {op}"
+        self.res = self.operations.get(op)(left, right)
+        self.zero = (self.res == 0)
+        self.sign = (self.res < 0)
+        return self.res
 
 class DataPath:
     """Тракт данных (пассивный), включая: ввод/вывод, память и арифметику.
