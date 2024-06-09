@@ -1,18 +1,12 @@
 in_source: |-
-  ei
+  input    
   loop:
-    jmp loop
-
-  int1:
-    di
-    input
-    jz break,ir
-    print
-    ei
-    iret
-
+          jz break,input_register
+          print
+          input
+          jmp loop
   break:
-    halt
+          halt
 in_stdin: |-
   [(0, 'K'), (10, 'A'), (20, 'M'), (30, 'I'), (40, 'L'), (50, '')]
 out_code: |-
