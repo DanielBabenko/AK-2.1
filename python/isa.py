@@ -28,10 +28,6 @@ class Opcode(str, Enum):
 
     ADD_STR = "add_str"
 
-    EI = "ei"
-    DI = "di"
-    IRET = "iret"
-
     STORE = "store"
 
     RIGHT = "right"
