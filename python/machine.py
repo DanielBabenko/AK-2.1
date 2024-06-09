@@ -237,7 +237,7 @@ class ControlUnit:
             return True
 
         if opcode is Opcode.JZ:
-            addr, reg = instr["arg"]
+            addr = instr["arg"]
 
             self.data_path.signal_latch_acc()
             self.tick()
