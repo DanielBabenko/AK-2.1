@@ -6,7 +6,7 @@ in_source: |-
   ; Каждый символ brainfuck соответствует одной инструкции на Asm.
           input     ; ,
   loop:
-          jz break  ; [
+          jz break, 1  ; [
           print     ; .
           input     ; ,
           jmp loop  ; ]
