@@ -165,7 +165,6 @@ class DataPath:
         return res
 
     def signal_wr(self, sel):
-
         assert sel in {
             Opcode.INC.value,
             Opcode.DEC.value,
@@ -180,7 +179,6 @@ class DataPath:
             assert -128 <= symbol_code <= 127, "input token is out of bound: {}".format(symbol_code)
             self.memory.memory[self.data_address] = symbol_code
             logging.debug("input: %s", repr(symbol))
-
 
     def signal_output(self):
         """Вывести значение аккумулятора в порт вывода.
