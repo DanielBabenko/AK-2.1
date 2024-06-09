@@ -4,19 +4,17 @@ in_source: |-
 
   mov r1,12       ; length
   mov r2,hello    ; beginning
-  call print_str
-  halt
+  
+  loop_print_str:
+      jz break_print_str,r1
+      inc r2
+      print_char r2
 
-  print_str:
-      loop_print_str:
-          jz break_print_str,r1
-          inc r2
-          print_char r2
-
-          dec r1
-          jmp loop_print_str
-      break_print_str:
-          ret
+      dec r1
+      jmp loop_print_str
+  
+  break_print_str:
+      halt
 in_stdin: |
 out_log: |
   DEBUG   machine:simulation    TICK:   0 PC: 100 ADDR:  13 MEM_OUT: 0 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	mov ['r1', '12']  ('mov r1,12'@4:0)
@@ -112,10 +110,10 @@ out_log: |
   DEBUG   machine:simulation    TICK:  65 PC: 103 ADDR:  12 MEM_OUT: 33 rs: 0 rc: 0 r1: 0 r2: 12 r3: 0 	halt  ('halt'@7:0)
   INFO    machine:simulation    output_buffer: 'hello world!'
 out_stdout: |
-  source LoC: 18 code instr: 10
+  source LoC: 16 code instr: 8
   ============================================================
   hello world!
-  instr_counter:  65 ticks: 65
+  instr_counter:  63 ticks: 63
 out_code: |-
   [12,
    104,
@@ -219,11 +217,9 @@ out_code: |-
    0,
    {"index": 0, "opcode": "mov", "arg": ["r1", "12"], "term": [4, 0, "mov r1,12"]},
    {"index": 1, "opcode": "mov", "arg": ["r2", "0"], "term": [5, 0, "mov r2,hello"]},
-   {"index": 2, "opcode": "call", "arg": 104, "term": [6, 0, "call print_str"]},
-   {"index": 3, "opcode": "halt", "term": [7, 0, "halt"]},
-   {"index": 4, "opcode": "jz", "arg": [109, "r1"], "term": [11, 0, "jz break_print_str,r1"]},
-   {"index": 5, "opcode": "inc", "arg": ["r2"], "term": [12, 0, "inc r2"]},
-   {"index": 6, "opcode": "print_char", "arg": ["r2"], "term": [13, 0, "print_char r2"]},
-   {"index": 7, "opcode": "dec", "arg": ["r1"], "term": [15, 0, "dec r1"]},
-   {"index": 8, "opcode": "jmp", "arg": 104, "term": [16, 0, "jmp loop_print_str"]},
-   {"index": 9, "opcode": "ret", "term": [18, 0, "ret"]}]
+   {"index": 2, "opcode": "jz", "arg": [107, "r1"], "term": [8, 0, "jz break_print_str,r1"]},
+   {"index": 3, "opcode": "inc", "arg": ["r2"], "term": [9, 0, "inc r2"]},
+   {"index": 4, "opcode": "print_char", "arg": ["r2"], "term": [10, 0, "print_char r2"]},
+   {"index": 5, "opcode": "dec", "arg": ["r1"], "term": [12, 0, "dec r1"]},
+   {"index": 6, "opcode": "jmp", "arg": 102, "term": [13, 0, "jmp loop_print_str"]},
+   {"index": 7, "opcode": "halt", "term": [16, 0, "halt"]}]
