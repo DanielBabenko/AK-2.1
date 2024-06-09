@@ -97,34 +97,18 @@ class DataPath:
         self.output_buffer = []
 
     def signal_latch_program_counter(self, sel_next: bool):
-        """Защёлкнуть новое значение счётчика команд.
-
-        Если `sel_next` равен `True`, то счётчик будет увеличен на единицу,
-        иначе -- будет установлен в значение аргумента текущей инструкции.
-        """
         if sel_next:
             self.program_counter += 1
         else:
             self.program_counter = self.data_register
 
-    def signal_latch_input_register(self, value: int):
-        """Защёлкнуть новое значение регистра ввода."""
+    def signal_latch_input_buffer(self, value: int):
         self.input_register = value
 
     def signal_latch_data_register(self, value: int):
-        """Защёлкнуть новое значение регистра данных."""
         self.data_register = value
 
     def signal_latch_data_addr(self, sel):
-        """Защёлкнуть адрес в памяти данных. Защёлкивание осуществляется на
-        основе селектора `sel` в котором указывается `Opcode`:
-
-        - `Opcode.LEFT.value` -- сдвиг влево;
-
-        - `Opcode.RIGHT.value` -- сдвиг вправо.
-
-        При выходе за границы памяти данных процесс моделирования останавливается.
-        """
         assert sel in {Opcode.LEFT.value, Opcode.RIGHT.value}, "internal error, incorrect selector: {}".format(sel)
 
         if sel == Opcode.LEFT.value:
@@ -400,6 +384,10 @@ class ControlUnit:
 
     def execute_input(self, instr, opcode, phase):
         self.data_path.signal_wr(opcode.value)
+
+        addr = instr["arg"]
+
+        self.ignal_latch_input_buffer(addr)
         self.data_path.signal_latch_program_counter(sel_next=True)
         self.tick()
 
