@@ -1,8 +1,8 @@
 # Архитектура компьютера. Лабораторная работа №3
 
 - Автор: Бабенко Даниил Александрович, P3234
-- Вариант: Базовый (без усложнения)
-    - `asm | risc | harw | mc | instr | struct | stream | port | pstr | prob2`
+- Вариант: Упрощённый
+    - `asm | risc | harw | hw | instr | struct | stream | port | pstr | prob2`
 
 ## Язык программирования
 
