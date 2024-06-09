@@ -1,0 +1,17 @@
+in_source: |-
+  mov r1,1
+  mov r2,2
+  add rs,r1,r2
+  halt
+
+in_stdin: |
+out_log: |
+  DEBUG   machine:simulation    TICK:   0 PC: 100 ADDR:   0 MEM_OUT: 0 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0
+
+out_stdout: |
+  source LoC: 26 code instr: 14
+  ============================================================
+
+  instr_counter:  264 ticks: 264
+out_code: |-
+  [0,
