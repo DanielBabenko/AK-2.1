@@ -534,16 +534,14 @@ def main(code_file: str, input_file: str):
     code = read_code(code_file)
     with open(input_file, encoding="utf-8") as file:
         input_text = file.read().strip()
-        if not input_text:
-            input_tokens = []
-        else:
-            input_tokens = eval(input_text)
+        input_tokens = []
+        for char in input_text:
+            input_tokens.append(char)
 
     output, instr_counter, ticks = simulation(code, input_tokens=input_tokens, data_memory_size=100, limit=10000)
 
     print("".join(output))
     print("instr_counter: ", instr_counter, "ticks:", ticks)
-
 
 if __name__ == "__main__":
     logging.getLogger().setLevel(logging.DEBUG)
