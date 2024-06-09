@@ -7,6 +7,7 @@ import contextlib
 import io
 import logging
 import os
+
 import tempfile
 import machine
 import pytest
