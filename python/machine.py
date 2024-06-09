@@ -227,30 +227,6 @@ class ControlUnit:
         if opcode is Opcode.HALT:
             raise StopIteration()
 
-        if opcode is Opcode.CALL:
-            addr = instr["arg"]
-
-            self.data_path.prev_program_counter = self.data_path.program_counter
-
-            self.data_path.signal_latch_data_register(addr)
-
-            self.data_path.signal_latch_program_counter(sel_next=False)
-            self.tick()
-
-            return True
-
-        if opcode is Opcode.RET:
-            addr = self.data_path.prev_program_counter + 1
-
-            self.data_path.signal_latch_data_register(addr)
-
-            self.data_path.prev_program_counter = None
-
-            self.data_path.signal_latch_program_counter(sel_next=False)
-            self.tick()
-
-            return True
-
         if opcode is Opcode.JMP:
             addr = instr["arg"]
 

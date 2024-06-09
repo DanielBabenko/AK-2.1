@@ -35,9 +35,6 @@ class Opcode(str, Enum):
 
     PRINT_CHAR = "print_char"
 
-    CALL = "call"
-    RET = "ret"
-
     WORD = "word"
 
     def __str__(self):

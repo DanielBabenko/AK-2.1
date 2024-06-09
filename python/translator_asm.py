@@ -83,7 +83,6 @@ def translate_stage_2(label2command_address: dict, label2str_address: dict, code
             Opcode.JS.value,
             Opcode.JNS.value,
             Opcode.JMP.value,
-            Opcode.CALL.value,
         }:
             label = instruction["arg"]
             if label[0].isdigit() or label[0][0] == "r" and label[0][1].isdigit():
