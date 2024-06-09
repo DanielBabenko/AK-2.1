@@ -40,25 +40,29 @@ class DataPath:
     input_buffer = None
     output_buffer = None
 
-    def __init__(self, data_memory_size, input_buffer):
+    def __init__(self, alu: ALU, data_memory_size, input_buffer):
+
+        self.registers = {
+            "r1": 0,
+            "r2": 0,
+            "r3": 0,
+            "r4": 0,
+            "rc": 0,  # "r5": 0,
+            "rs": 0,  # "r6": 0,
+            "r7": 0,
+        }
+
         assert data_memory_size > 0, "Data_memory size should be non-zero"
         self.data_memory_size = data_memory_size
         self.data_memory = [0] * data_memory_size
         self.data_address = 0
         self.acc = 0
+        self.alu = alu
         self.input_buffer = input_buffer
         self.output_buffer = []
 
     def signal_latch_data_addr(self, sel):
-        """Защёлкнуть адрес в памяти данных. Защёлкивание осуществляется на
-        основе селектора `sel` в котором указывается `Opcode`:
 
-        - `Opcode.LEFT.value` -- сдвиг влево;
-
-        - `Opcode.RIGHT.value` -- сдвиг вправо.
-
-        При выходе за границы памяти данных процесс моделирования останавливается.
-        """
         assert sel in {Opcode.LEFT.value, Opcode.RIGHT.value}, "internal error, incorrect selector: {}".format(sel)
 
         if sel == Opcode.LEFT.value:
@@ -69,10 +73,26 @@ class DataPath:
         assert 0 <= self.data_address < self.data_memory_size, "out of memory: {}".format(self.data_address)
 
     def signal_latch_acc(self):
-        """Защёлкнуть слово из памяти (`oe` от Output Enable) и защёлкнуть его в
-        аккумулятор. Сигнал `oe` выставляется неявно `ControlUnit`-ом.
-        """
         self.acc = self.data_memory[self.data_address]
+
+    def signal_alu_l(self, sel):
+        if sel == "imml":
+            self.alu_l_value = self.imml
+        else:
+            self.alu_l_value = self.input_register if sel == "ir" else self.registers.get(sel)
+
+    def signal_alu_r(self, sel):
+        if sel == "0":
+            self.alu_r_value = 0
+        elif sel == "immr":
+            self.alu_r_value = self.immr
+        else:
+            self.alu_r_value = self.input_register if sel == "ir" else self.registers.get(sel)
+
+    def signal_alu_op(self, sel):
+        res = self.alu.calc(sel, self.alu_l_value, self.alu_r_value)
+        assert res is not None, "unknown instruction"
+        return res
 
     def signal_wr(self, sel):
 
@@ -100,18 +120,15 @@ class DataPath:
             logging.debug("input: %s", repr(symbol))
 
     def signal_output(self):
-        """Вывести значение аккумулятора в порт вывода.
-
-        Вывод осуществляется путём конвертации значения аккумулятора в символ по
-        ASCII-таблице.
-        """
         symbol = chr(self.acc)
         logging.debug("output: %s << %s", repr("".join(self.output_buffer)), repr(symbol))
         self.output_buffer.append(symbol)
 
     def zero(self):
-        """Флаг нуля. Необходим для условных переходов."""
         return self.acc == 0
+
+    def sign(self):
+        return self.acc < 0
 
 
 class ControlUnit:
@@ -128,19 +145,12 @@ class ControlUnit:
         self._tick = 0
 
     def tick(self):
-        """Продвинуть модельное время процессора вперёд на один такт."""
         self._tick += 1
 
     def current_tick(self):
-        """Текущее модельное время процессора (в тактах)."""
         return self._tick
 
     def signal_latch_program_counter(self, sel_next):
-        """Защёлкнуть новое значение счётчика команд.
-
-        Если `sel_next` равен `True`, то счётчик будет увеличен на единицу,
-        иначе -- будет установлен в значение аргумента текущей инструкции.
-        """
         if sel_next:
             self.program_counter += 1
         else:
@@ -149,9 +159,7 @@ class ControlUnit:
             self.program_counter = instr["arg"]
 
     def decode_and_execute_control_flow_instruction(self, instr, opcode):
-        """Декодировать и выполнить инструкцию управления потоком исполнения. В
-        случае успеха -- вернуть `True`, чтобы перейти к следующей инструкции.
-        """
+
         if opcode is Opcode.HALT:
             raise StopIteration()
 
@@ -179,23 +187,6 @@ class ControlUnit:
         return False
 
     def decode_and_execute_instruction(self):
-        """Основной цикл процессора. Декодирует и выполняет инструкцию.
-
-        Обработка инструкции:
-
-        1. Проверить `Opcode`.
-
-        2. Вызвать методы, имитирующие необходимые управляющие сигналы.
-
-        3. Продвинуть модельное время вперёд на один такт (`tick`).
-
-        4. (если необходимо) повторить шаги 2-3.
-
-        5. Перейти к следующей инструкции.
-
-        Обработка функций управления потоком исполнения вынесена в
-        `decode_and_execute_control_flow_instruction`.
-        """
         instr = self.program[self.program_counter]
         opcode = instr["opcode"]
 
@@ -223,6 +214,37 @@ class ControlUnit:
             self.signal_latch_program_counter(sel_next=True)
             self.tick()
 
+        if opcode in {Opcode.MOD, Opcode.MUL, Opcode.ADD, Opcode.SUB}:
+            return self.execute_binary_operation(instr, opcode)
+
+    def execute_binary_operation(self, instr, opcode):
+        args: list[str]
+        args = instr["arg"]
+        a, b, c = args
+        assert a in self.data_path.registers, "unknown register"
+
+        if b.isdigit():
+            self.data_path.imml = int(b)
+            self.data_path.signal_alu_left("imml")
+        else:
+            self.data_path.signal_alu_left(b)
+
+        if c.isdigit():
+            self.data_path.immr = int(c)
+            self.data_path.signal_alu_right("immr")
+        else:
+            self.data_path.signal_alu_right(c)
+
+        self.data_path.signal_alu_op(instr["opcode"])
+
+        value = self.data_path.alu.res
+
+        self.data_path.signal_latch_r(a, value)
+
+        self.data_path.signal_latch_program_counter(sel_next=True)
+        self.tick()
+        return True
+
     def __repr__(self):
         """Вернуть строковое представление состояния процессора."""
         state_repr = "TICK: {:3} PC: {:3} ADDR: {:3} MEM_OUT: {} ACC: {}".format(
@@ -248,17 +270,7 @@ class ControlUnit:
 
 
 def simulation(code, input_tokens, data_memory_size, limit):
-    """Подготовка модели и запуск симуляции процессора.
 
-    Длительность моделирования ограничена:
-
-    - количеством выполненных инструкций (`limit`);
-
-    - количеством данных ввода (`input_tokens`, если ввод используется), через
-      исключение `EOFError`;
-
-    - инструкцией `Halt`, через исключение `StopIteration`.
-    """
     data_path = DataPath(data_memory_size, input_tokens)
     control_unit = ControlUnit(code, data_path)
     instr_counter = 0
