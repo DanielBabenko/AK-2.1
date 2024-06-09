@@ -22,6 +22,11 @@ def translate_stage_1(text):
     либо 1 инструкция. Поэтому: `col` заполняется всегда 0, так как не несёт
     смысловой нагрузки.
     """
+    opcodes_with_operand = [Opcode.JMP, Opcode.DEC, Opcode.INC, Opcode.PRINT_CHAR, Opcode.CALL]
+    opcodes_with_two_operands = [Opcode.JZ, Opcode.JNZ, Opcode.JS, Opcode.JNS, Opcode.ADD_STR, Opcode.STORE]
+    opcodes_with_three_operands = [Opcode.MOV, Opcode.MOD, Opcode.MUL, Opcode.SUB, Opcode.ADD]
+    opcodes_with_operands = opcodes_with_operand + opcodes_with_two_operands + opcodes_with_three_operands
+
     code = []
     labels = {}
 
@@ -32,18 +37,18 @@ def translate_stage_1(text):
 
         pc = len(code)
 
-        if token.endswith(":"):  # токен содержит метку
+        if token.endswith(":"):
             label = token.strip(":")
             assert label not in labels, "Redefinition of label: {}".format(label)
             labels[label] = pc
-        elif " " in token:  # токен содержит инструкцию с операндом (отделены пробелом)
+        elif " " in token:
             sub_tokens = token.split(" ")
             assert len(sub_tokens) == 2, "Invalid instruction: {}".format(token)
             mnemonic, arg = sub_tokens
             opcode = Opcode(mnemonic)
             assert opcode == Opcode.JZ or opcode == Opcode.JMP, "Only `jz` and `jnz` instructions take an argument"
             code.append({"index": pc, "opcode": opcode, "arg": arg, "term": Term(line_num, 0, token)})
-        else:  # токен содержит инструкцию без операндов
+        else:
             opcode = Opcode(token)
             code.append({"index": pc, "opcode": opcode, "term": Term(line_num, 0, token)})
 
@@ -51,8 +56,7 @@ def translate_stage_1(text):
 
 
 def translate_stage_2(labels, code):
-    """Второй проход транслятора. В уже определённые инструкции подставляются
-    адреса меток."""
+
     for instruction in code:
         if "arg" in instruction:
             label = instruction["arg"]
@@ -62,14 +66,7 @@ def translate_stage_2(labels, code):
 
 
 def translate(text):
-    """Трансляция текста программы на Asm в машинный код.
 
-    Выполняется в два прохода:
-
-    1. Разбор текста на метки и инструкции.
-
-    2. Подстановка адресов меток в операнды инструкции.
-    """
     labels, code = translate_stage_1(text)
     code = translate_stage_2(labels, code)
 
