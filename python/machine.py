@@ -1,8 +1,11 @@
+from __future__ import annotations
+
 import logging
 import sys
 from typing import ClassVar
 
 from isa import Opcode, read_code
+
 
 class Memory:
     """Память фон Неймановская архитектура"""
