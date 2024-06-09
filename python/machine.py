@@ -165,21 +165,7 @@ class DataPath:
         return res
 
     def signal_wr(self, sel):
-        """wr (от WRite), сохранить в память.
 
-        Запись в память осуществляется на основе селектора `sel` в котором указывается `Opcode`:
-
-        - `Opcode.INC.value` -- инкремент аккумулятора;
-
-        - `Opcode.DEC.value` -- декремент аккумулятора;
-
-        - `Opcode.INPUT.value` -- ввод из буфера входных данных. При исчерпании
-          буфера -- выбрасывается исключение `EOFError`.
-
-        В примере ниже имитируется переполнение ячейки при инкременте. Данный
-        текст является doctest-ом, корректность которого проверяется во время
-        загрузки модуля или командой: `python3 -m doctest -v machine.py`
-        """
         assert sel in {
             Opcode.INC.value,
             Opcode.DEC.value,
@@ -194,6 +180,7 @@ class DataPath:
             assert -128 <= symbol_code <= 127, "input token is out of bound: {}".format(symbol_code)
             self.memory.memory[self.data_address] = symbol_code
             logging.debug("input: %s", repr(symbol))
+
 
     def signal_output(self):
         """Вывести значение аккумулятора в порт вывода.
