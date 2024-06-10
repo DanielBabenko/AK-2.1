@@ -56,8 +56,8 @@ def translate_stage_1(text: str) -> tuple[dict, dict, list, list]:
                 label2str_address[last_label] = len(data)
 
                 data.append(int(arg[0]))
-                for let in arg[1][1:-1]:
-                    data.append(ord(let))
+                for letter in arg[1][1:-1]:
+                    data.append(ord(letter))
             else:
                 code.append({"index": pc, "opcode": opcode, "arg": arg, "term": Term(line_num, 0, token)})
 
@@ -112,10 +112,7 @@ def translate(text: str) -> list:
     label2command_address, label2str_address, code, data = translate_stage_1(text)
     code = translate_stage_2(label2command_address, label2str_address, code)
 
-    empty_data_count = 0 - len(data)
-    memory = data + empty_data_count * [0] + code
-
-    return memory
+    return code
 
 
 def main(source: str, target: str) -> None:
