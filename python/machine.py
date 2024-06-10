@@ -63,7 +63,7 @@ class DataPath:
 
     input_buffer = None
 
-    def __init__(self, alu: ALU, data_memory_size, input_buffer):
+    def __init__(self, alu: ALU, data_memory_size, input_buffer, data):
 
         assert data_memory_size > 0, "Data_memory size should be non-zero"
         self.data_memory_size = data_memory_size
@@ -92,14 +92,17 @@ class DataPath:
 
         self.output_buffer = []
 
+        for var_addr, variable in enumerate(data):
+            self.data_memory[var_addr] = int(variable)
+
     def signal_latch_program_counter(self, sel_next: bool):
         if sel_next:
             self.program_counter += 1
         else:
             self.program_counter = self.data_register
 
-    def signal_latch_input_buffer(self, value: int):
-        self.input_register = value
+    def signal_latch_input_buffer(self):
+        self.input_register = self.data_memory[self.data_address]
 
     def signal_latch_data_register(self, value: int):
         self.data_register = value
@@ -372,20 +375,17 @@ class ControlUnit:
         else:
             a = self.data_path.registers.get(a)
         if b.isdigit():
-            self.memory.memory[a] = int(b)
+            self.data_path.data_memory[a] = int(b)
         else:
-            self.memory.memory[a] = self.data_path.registers.get(b)
+            self.data_path.data_memory[a] = self.data_path.registers.get(b)
 
         self.data_path.signal_latch_program_counter(sel_next=True)
         self.tick()
         return True
 
     def execute_input(self, instr, opcode, phase):
+        self.data_path.signal_latch_input_buffer()
         self.data_path.signal_wr(opcode.value)
-
-        addr = instr["arg"]
-
-        self.data_path.signal_latch_input_buffer(addr)
         self.data_path.signal_latch_program_counter(sel_next=True)
         self.tick()
 
@@ -436,7 +436,7 @@ class ControlUnit:
             Opcode.PRINT_CHAR: self.execute_print_char,
             Opcode.STORE: self.execute_store,
             Opcode.PRINT: self.execute_print,
-            Opcode.INPUT: self.execute_input,
+            Opcode.INPUT: self.execute_input
         }
 
         assert opcode in opcode2handler, f"command {opcode.value} is unknown"
@@ -473,7 +473,7 @@ class ControlUnit:
         return "{} \t{}".format(state_repr, instr_repr)
 
 
-def simulation(code: list, input_tokens: list, data_memory_size: int, limit: int):
+def simulation(code: list, input_tokens: list, data_memory_size: int, limit: int, data: list):
     """Подготовка модели и запуск симуляции процессора.
 
     Длительность моделирования ограничена:
@@ -487,7 +487,7 @@ def simulation(code: list, input_tokens: list, data_memory_size: int, limit: int
     """
     alu = ALU()
 
-    data_path = DataPath(alu, data_memory_size, input_tokens)
+    data_path = DataPath(alu, data_memory_size, input_tokens, data)
     control_unit = ControlUnit(code, data_path)
     instr_counter = 0
 
@@ -516,14 +516,15 @@ def main(code_file: str, input_file: str):
     """Функция запуска модели процессора. Параметры -- имена файлов с машинным
     кодом и с входными данными для симуляции.
     """
-    code = read_code(code_file)
+    code, data = read_code(code_file)
+
     with open(input_file, encoding="utf-8") as file:
         input_text = file.read().strip()
         input_tokens = []
         for char in input_text:
             input_tokens.append(char)
 
-    output, instr_counter, ticks = simulation(code, input_tokens=input_tokens, data_memory_size=100, limit=10000)
+    output, instr_counter, ticks = simulation(code, input_tokens=input_tokens, data_memory_size=100, limit=10000, data=data)
 
     print("".join(output))
     print("instr_counter: ", instr_counter, "ticks:", ticks)

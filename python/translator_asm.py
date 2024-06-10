@@ -100,7 +100,7 @@ def translate_stage_2(label2command_address: dict, label2str_address: dict, code
     return code
 
 
-def translate(text: str) -> list:
+def translate(text: str) -> tuple[list, list]:
     """Трансляция текста программы на Asm в машинный код.
 
     Выполняется в два прохода:
@@ -112,7 +112,7 @@ def translate(text: str) -> list:
     label2command_address, label2str_address, code, data = translate_stage_1(text)
     code = translate_stage_2(label2command_address, label2str_address, code)
 
-    return code
+    return code, data
 
 
 def main(source: str, target: str) -> None:
@@ -120,9 +120,9 @@ def main(source: str, target: str) -> None:
     with open(source, encoding="utf-8") as f:
         source = f.read()
 
-    code = translate(source)
+    code, data = translate(source)
 
-    write_code(target, code)
+    write_code(target, code, data)
     print("source LoC:", len(source.split("\n")), "code instr:", len(code))
 
 

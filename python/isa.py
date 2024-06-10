@@ -47,15 +47,18 @@ class Term(namedtuple("Term", "line pos symbol")):
     Сделано через класс, чтобы был docstring.
     """
 
-def write_code(filename, code):
+def write_code(filename, code, data):
     with open(filename, "w", encoding="utf-8") as file:
         buf = []
         for instr in code:
             buf.append(json.dumps(instr))
         file.write("[" + ",\n ".join(buf) + "]")
 
+    with open("hello_world.txt", "w", encoding="utf-8") as file:
+        file.write(json.dumps(data, indent=4))
 
-def read_code(filename: str) -> list:
+
+def read_code(filename: str) -> tuple[list, list]:
 
     with open(filename, encoding="utf-8") as file:
         code = json.loads(file.read())
@@ -68,4 +71,7 @@ def read_code(filename: str) -> list:
                 assert len(instr["term"]) == 3
                 instr["term"] = Term(instr["term"][0], instr["term"][1], instr["term"][2])
 
-    return code
+    with open("hello_world.txt", encoding="utf-8") as file:
+        data = json.loads(file.read())
+
+    return code, data
