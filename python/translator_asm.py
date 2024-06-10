@@ -5,8 +5,6 @@ import sys
 
 from isa import Opcode, Term, write_code
 
-SHIFT = 100  # именно с этого адреса в памяти лежат инструкции
-
 
 def get_meaningful_token(line: str) -> str:
     """Извлекаем из строки содержательный токен (метка или инструкция), удаляем
@@ -24,7 +22,7 @@ def translate_stage_1(text: str) -> tuple[dict, dict, list, list]:
     label2str_address = {}
     data = []
 
-    opcodes_with_operand = [Opcode.JMP, Opcode.DEC, Opcode.INC, Opcode.PRINT_CHAR]
+    opcodes_with_operand = [Opcode.JMP, Opcode.DEC, Opcode.INC, Opcode.PRINT_CHAR, Opcode.INPUT]
     opcodes_with_two_operands = [Opcode.JZ, Opcode.JNZ, Opcode.JS, Opcode.JNS, Opcode.ADD_STR, Opcode.STORE]
     opcodes_with_three_operands = [Opcode.MOV, Opcode.MOD, Opcode.MUL, Opcode.SUB, Opcode.ADD]
     opcodes_with_operands = opcodes_with_operand + opcodes_with_two_operands + opcodes_with_three_operands
@@ -41,7 +39,7 @@ def translate_stage_1(text: str) -> tuple[dict, dict, list, list]:
         if token.endswith(":"):  # токен содержит метку
             label = token.strip(":")
             assert label not in label2command_address, "Redefinition of label: {}".format(label)
-            label2command_address[label] = SHIFT + pc
+            label2command_address[label] = pc
 
             last_label = label
         elif " " in token:  # токен содержит инструкцию с операндом (отделены пробелом)
@@ -114,11 +112,8 @@ def translate(text: str) -> list:
     label2command_address, label2str_address, code, data = translate_stage_1(text)
     code = translate_stage_2(label2command_address, label2str_address, code)
 
-    empty_data_count = SHIFT - len(data)
+    empty_data_count = - len(data)
     memory = data + empty_data_count * [0] + code
-    if "int1" in label2command_address:
-        # 99я ячейка памяти (последняя ячейка до инструкций) - вектор прерывания
-        memory[SHIFT - 1] = label2command_address["int1"]
 
     return memory
 
@@ -131,7 +126,7 @@ def main(source: str, target: str) -> None:
     code = translate(source)
 
     write_code(target, code)
-    print("source LoC:", len(source.split("\n")), "code instr:", len(code) - SHIFT)
+    print("source LoC:", len(source.split("\n")), "code instr:", len(code))
 
 
 if __name__ == "__main__":

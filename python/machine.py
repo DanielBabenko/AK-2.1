@@ -6,15 +6,6 @@ from typing import ClassVar
 
 from isa import Opcode, read_code
 
-
-class Memory:
-    """Память фон Неймановская архитектура"""
-
-    def __init__(self, data_memory_size: int, code: list):
-        self.shift = data_memory_size
-        self.memory = code.copy()
-
-
 class ALU:
     """Арифметико-логическое устройство"""
 
@@ -40,10 +31,10 @@ class ALU:
 
 class DataPath:
     """Тракт данных, включая: ввод/вывод, память и арифметику."""
-
-    memory: Memory = None
-
     alu: ALU = None
+
+    data_memory_size = None
+    data_memory = None
 
     data_address: int = None
 
@@ -71,7 +62,13 @@ class DataPath:
 
     input_buffer = None
 
-    def __init__(self, alu: ALU, memory: Memory, input_buffer):
+    def __init__(self, alu: ALU, data_memory_size, input_buffer):
+
+        assert data_memory_size > 0, "Data_memory size should be non-zero"
+        self.data_memory_size = data_memory_size
+        self.data_memory = [0] * data_memory_size
+        self.data_address = 0
+
         self.registers = {
             "r1": 0,
             "r2": 0,
@@ -82,15 +79,13 @@ class DataPath:
             "r7": 0,
         }
 
-        self.memory = memory
         self.alu = alu
-        self.data_address = memory.memory.index(0)
-        self.new_data_address = memory.memory.index(0)
+        self.new_data_address = 0
 
         self.buffer = 0
         self.input_buffer = input_buffer
 
-        self.program_counter = memory.shift
+        self.program_counter = 0
         self.data_register = 0
         self.input_register = 0
 
@@ -118,13 +113,13 @@ class DataPath:
             self.data_address += 1
             self.new_data_address += 1
 
-        assert 0 <= self.data_address < len(self.memory.memory), "out of memory: {}".format(self.data_address)
+        assert 0 <= self.data_address < self.data_memory_size, "out of memory: {}".format(self.data_address)
 
     def signal_latch_output_register(self):
         """Защёлкнуть слово из памяти (`oe` от Output Enable) и защёлкнуть его в
         аккумулятор. Сигнал `oe` выставляется неявно `ControlUnit`-ом.
         """
-        self.output_register = self.memory.memory[self.data_address]
+        self.output_register = self.data_memory[self.data_address]
 
     def signal_latch_r(self, register_name: str, value):
         # для r1, ..., r7 (регистров общего назначения)
@@ -162,7 +157,7 @@ class DataPath:
             symbol = self.input_buffer.pop(0)
             symbol_code = ord(symbol)
             assert -128 <= symbol_code <= 127, "input token is out of bound: {}".format(symbol_code)
-            self.memory.memory[self.data_address] = symbol_code
+            self.data_memory[self.data_address] = symbol_code
             logging.debug("input: %s", repr(symbol))
 
     def signal_output(self):
@@ -192,11 +187,13 @@ class ControlUnit:
     data_path: DataPath = None
     "Блок обработки данных."
 
+    program = None
+
     _tick: int = None
     "Текущее модельное время процессора (в тактах). Инициализируется нулём."
 
-    def __init__(self, memory: Memory, data_path: DataPath):
-        self.memory = memory
+    def __init__(self, program, data_path: DataPath):
+        self.program = program
 
         self.data_path = data_path
         self._tick = 0
@@ -387,7 +384,7 @@ class ControlUnit:
 
         addr = instr["arg"]
 
-        self.ignal_latch_input_buffer(addr)
+        self.data_path.signal_latch_input_buffer(addr)
         self.data_path.signal_latch_program_counter(sel_next=True)
         self.tick()
 
@@ -411,7 +408,7 @@ class ControlUnit:
         Обработка функций управления потоком исполнения вынесена в
         `decode_and_execute_control_flow_instruction`.
         """
-        instr = self.memory.memory[self.data_path.program_counter]
+        instr = self.program[self.data_path.program_counter]
 
         opcode = instr["opcode"]
 
@@ -453,7 +450,7 @@ class ControlUnit:
             self._tick,
             self.data_path.program_counter,
             self.data_path.data_address,
-            self.memory.memory[self.data_path.data_address],
+            self.data_path.data_memory[self.data_path.data_address],
             self.data_path.registers.get("rs"),
             self.data_path.registers.get("rc"),
             self.data_path.registers.get("r1"),
@@ -461,7 +458,7 @@ class ControlUnit:
             self.data_path.registers.get("r3"),
         )
 
-        instr = self.memory.memory[self.data_path.program_counter]
+        instr = self.program[self.data_path.program_counter]
         opcode = instr["opcode"]
         instr_repr = str(opcode)
 
@@ -487,11 +484,10 @@ def simulation(code: list, input_tokens: list, data_memory_size: int, limit: int
 
     - инструкцией `Halt`, через исключение `StopIteration`.
     """
-    memory = Memory(data_memory_size, code)
     alu = ALU()
 
-    data_path = DataPath(alu, memory, input_tokens)
-    control_unit = ControlUnit(memory, data_path)
+    data_path = DataPath(alu, data_memory_size, input_tokens)
+    control_unit = ControlUnit(code, data_path)
     instr_counter = 0
 
     logging.debug("%s", control_unit)
