@@ -6,6 +6,7 @@ from typing import ClassVar
 
 from isa import Opcode, read_code
 
+
 class ALU:
     """Арифметико-логическое устройство"""
 
