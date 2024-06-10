@@ -112,7 +112,7 @@ def translate(text: str) -> list:
     label2command_address, label2str_address, code, data = translate_stage_1(text)
     code = translate_stage_2(label2command_address, label2str_address, code)
 
-    empty_data_count = - len(data)
+    empty_data_count = 0 - len(data)
     memory = data + empty_data_count * [0] + code
 
     return memory
