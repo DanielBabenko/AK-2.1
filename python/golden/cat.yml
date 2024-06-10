@@ -1,131 +1,26 @@
 in_source: |-
-  ; Данный пример генерирует идентичный машинный код, что и программа на brainfuck:
-  ;
-  ; ,[.,]
-  ;
-  ; Каждый символ brainfuck соответствует одной инструкции на Asm.
-          input r1     ; ,
+  input
   loop:
-          jz break,r1  ; [
-          print     ; .
-          input r2    ; ,
-          jmp loop  ; ]
+      jz break,ir
+      print
+      input
+      jmp loop
   break:
-          halt      ; конец файла
+      halt
 in_stdin: |-
   Fifty two!
 out_code: |-
-    [0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-   {"index": 0, "opcode": "input", "arg": ["r1"], "term": [6, 0, "input r1"]},
-   {"index": 1, "opcode": "jz", "arg": [105, "r1"], "term": [8, 0, "jz break,r1"]},
-   {"index": 2, "opcode": "print", "term": [9, 0, "print"]},
-   {"index": 3, "opcode": "input", "term": [10, 0, "input"]},
-   {"index": 4, "opcode": "jmp", "arg": 101, "term": [11, 0, "jmp loop"]},
-   {"index": 5, "opcode": "halt", "term": [13, 0, "halt"]}]
+    [{"index": 0, "opcode": "input", "term": [1, 0, "input"]},
+     {"index": 1, "opcode": "jz", "arg": [5, "ir"], "term": [3, 0, "jz break,ir"]},
+     {"index": 2, "opcode": "print", "term": [4, 0, "print"]},
+     {"index": 3, "opcode": "input", "term": [5, 0, "input"]},
+     {"index": 4, "opcode": "jmp", "arg": 1, "term": [6, 0, "jmp loop"]},
+     {"index": 5, "opcode": "halt", "term": [8, 0, "halt"]}]
 out_stdout: |
-  source LoC: 13 code instr: 6
+  source LoC: 8 code instr: 6
   ============================================================
   Fifty two!
-  instr_counter:  39 ticks: 70
+  instr_counter:  39 ticks: 49
 out_log: |
   DEBUG   machine:simulation    TICK:   0 PC:   0 ADDR:   0 MEM_OUT: 0 ACC: 0 	input  ('input'@6:0)
   DEBUG   machine:signal_wr     input: 'F'

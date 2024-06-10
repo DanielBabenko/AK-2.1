@@ -101,8 +101,8 @@ class DataPath:
         else:
             self.program_counter = self.data_register
 
-    def signal_latch_input_buffer(self):
-        self.input_register = self.data_memory[self.data_address]
+    def signal_latch_input_register(self, value: int):
+        self.input_register = value
 
     def signal_latch_data_register(self, value: int):
         self.data_register = value
@@ -158,11 +158,16 @@ class DataPath:
         if sel == Opcode.INPUT.value:
             if len(self.input_buffer) == 0:
                 raise EOFError()
-            symbol = self.input_buffer.pop(0)
-            symbol_code = ord(symbol)
+
+            self.data_address = self.new_data_address
+
+            symbol_code = self.input_register
+            symbol = chr(symbol_code)
+
             assert -128 <= symbol_code <= 127, "input token is out of bound: {}".format(symbol_code)
             self.data_memory[self.data_address] = symbol_code
             logging.debug("input: %s", repr(symbol))
+            self.input_buffer.pop(0)
 
     def signal_output(self):
         """Вывести значение аккумулятора в порт вывода.
@@ -365,6 +370,14 @@ class ControlUnit:
         self.tick()
         return True
 
+    def do_input(self):
+        if len(self.data_path.input_buffer) != 0:
+            next_token = self.data_path.input_buffer[0]
+            if next_token:
+                self.data_path.signal_latch_input_register(ord(next_token))
+            else:
+                self.data_path.signal_latch_input_register(0)
+
     def execute_store(self, instr, opcode, phase):
         args: list[str]
         args = instr["arg"]
@@ -384,7 +397,7 @@ class ControlUnit:
         return True
 
     def execute_input(self, instr, opcode, phase):
-        self.data_path.signal_latch_input_buffer()
+        self.do_input()
         self.data_path.signal_wr(opcode.value)
         self.data_path.signal_latch_program_counter(sel_next=True)
         self.tick()
