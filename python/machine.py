@@ -68,7 +68,12 @@ class DataPath:
         assert data_memory_size > 0, "Data_memory size should be non-zero"
         self.data_memory_size = data_memory_size
         self.data_memory = [0] * data_memory_size
-        self.data_address = 0
+        self.data_address = len(data)
+        self.data_space = 0
+
+        for var_addr, variable in enumerate(data):
+            self.data_memory[var_addr] = int(variable)
+            self.data_space = var_addr + 1
 
         self.registers = {
             "r1": 0,
@@ -81,7 +86,7 @@ class DataPath:
         }
 
         self.alu = alu
-        self.new_data_address = 0
+        self.new_data_address = self.data_address
 
         self.buffer = 0
         self.input_buffer = input_buffer
@@ -91,9 +96,6 @@ class DataPath:
         self.input_register = 0
 
         self.output_buffer = []
-
-        for var_addr, variable in enumerate(data):
-            self.data_memory[var_addr] = int(variable)
 
     def signal_latch_program_counter(self, sel_next: bool):
         if sel_next:
@@ -124,6 +126,10 @@ class DataPath:
         аккумулятор. Сигнал `oe` выставляется неявно `ControlUnit`-ом.
         """
         self.output_register = self.data_memory[self.data_address]
+
+    def signal_data_space(self):
+        self.data_address = self.data_space
+        self.data_space += 1
 
     def signal_latch_r(self, register_name: str, value):
         # для r1, ..., r7 (регистров общего назначения)
@@ -170,6 +176,7 @@ class DataPath:
 
             if len(self.input_buffer) > 0:
                 self.input_buffer.pop(0)
+            self.new_data_address += 1
 
     def signal_output(self):
         """Вывести значение аккумулятора в порт вывода.
@@ -280,6 +287,7 @@ class ControlUnit:
 
     def execute_print(self, instr, opcode, phase):
         if phase == 1:
+            self.data_path.signal_data_space()
             self.data_path.signal_latch_output_register()
             self.tick()
             return None

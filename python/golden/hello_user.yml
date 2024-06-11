@@ -19,7 +19,7 @@ in_source: |-
   
   break_ask:
       input
-      jz break_input,ir
+      jnz break_input,r7
       inc r3
       jmp break_ask
   
@@ -426,8 +426,8 @@ out_log: |
 out_stdout: |
   source LoC: 57 code instr: 32
   ============================================================
-  What is your name? 
-  instr_counter:  123 ticks: 123
+  What is your name? Hello Daniel!
+  instr_counter:  192 ticks: 198
 out_code: |-
   [{"index": 0, "opcode": "mov", "arg": ["r1", "19"], "term": [8, 0, "mov r1,19"]},
    {"index": 1, "opcode": "mov", "arg": ["r2", "0"], "term": [9, 0, "mov r2,name"]},
@@ -438,7 +438,7 @@ out_code: |-
    {"index": 6, "opcode": "dec", "arg": ["r1"], "term": [16, 0, "dec r1"]},
    {"index": 7, "opcode": "jmp", "arg": 3, "term": [17, 0, "jmp ask"]},
    {"index": 8, "opcode": "input", "term": [20, 0, "input"]},
-   {"index": 9, "opcode": "jz", "arg": [12, "ir"], "term": [21, 0, "jz break_input,ir"]},
+   {"index": 9, "opcode": "jnz", "arg": [12, "r7"], "term": [21, 0, "jnz break_input,r7"]},
    {"index": 10, "opcode": "inc", "arg": ["r3"], "term": [22, 0, "inc r3"]},
    {"index": 11, "opcode": "jmp", "arg": 8, "term": [23, 0, "jmp break_ask"]},
    {"index": 12, "opcode": "mov", "arg": ["r1", "6"], "term": [26, 0, "mov r1,6"]},
