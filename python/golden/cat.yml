@@ -1,7 +1,7 @@
 in_source: |-
   input
   loop:
-      jz break,ir
+      jnz break,r7
       print
       input
       jmp loop
@@ -11,7 +11,7 @@ in_stdin: |-
   Fifty two!
 out_code: |-
     [{"index": 0, "opcode": "input", "term": [1, 0, "input"]},
-     {"index": 1, "opcode": "jz", "arg": [5, "ir"], "term": [3, 0, "jz break,ir"]},
+     {"index": 1, "opcode": "jnz", "arg": [5, "r7"], "term": [3, 0, "jnz break,r7"]},
      {"index": 2, "opcode": "print", "term": [4, 0, "print"]},
      {"index": 3, "opcode": "input", "term": [5, 0, "input"]},
      {"index": 4, "opcode": "jmp", "arg": 1, "term": [6, 0, "jmp loop"]},
@@ -20,7 +20,7 @@ out_stdout: |
   source LoC: 8 code instr: 6
   ============================================================
   Fifty two!
-  instr_counter:  39 ticks: 49
+  instr_counter:  42 ticks: 52
 out_log: |
   DEBUG   machine:simulation    TICK:   0 PC:   0 ADDR:   0 MEM_OUT: 0 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	input  ('input'@1:0)
   DEBUG   machine:signal_wr     input: 'F'
