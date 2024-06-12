@@ -286,7 +286,7 @@ jmp label   ; --> `jmp 123`, где 123 - номер инструкции пос
 
 ### ControlUnit
 
-![alt text](./Капибары.jpg)
+![alt text](./python/Капибары.jpg)
 
 Реализован в классе `ControlUnit`.
 
