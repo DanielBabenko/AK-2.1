@@ -399,6 +399,8 @@ jobs:
 - [simple](./python/golden/simple.yml) -- простой тест на работу арифметики
 - [prob2](./python/golden/prob2.yml) -- ряд Фиббоначи
 
+### Prob2
+
 ``` shell
 > python translator.py asm/cat.asm instructions.txt 
 source LoC: 14 code instr: 9
