@@ -9,10 +9,13 @@ in_source: |-
 
 in_stdin: |
 out_log: |
-  DEBUG   machine:simulation    TICK:   0 PC:   0 ADDR:   0 MEM_OUT: 0 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	mov ['r1', '1']  ('mov r1,1'@1:0)
-  DEBUG   machine:simulation    TICK:   1 PC:   1 ADDR:   0 MEM_OUT: 0 rs: 0 rc: 0 r1: 1 r2: 0 r3: 0 	mov ['r2', '2']  ('mov r2,2'@2:0)
-  DEBUG   machine:simulation    TICK:   2 PC:   2 ADDR:   0 MEM_OUT: 0 rs: 0 rc: 0 r1: 1 r2: 2 r3: 0 	add ['rs', 'r1', 'r2']  ('add rs,r1,r2'@3:0)
-  DEBUG   machine:simulation    TICK:   3 PC:   3 ADDR:   0 MEM_OUT: 0 rs: 3 rc: 0 r1: 1 r2: 2 r3: 0 	halt  ('halt'@4:0)
+  DEBUG   machine:simulation    TICK:   0 PC:   0 ADDR:   0 MEM_OUT: 0 rs: 0 rc: 0 r1: 0 r2: 0 r3: 0 	mov ['r1', '15']  ('mov r1,15'@1:0)
+  DEBUG   machine:simulation    TICK:   1 PC:   1 ADDR:   0 MEM_OUT: 0 rs: 0 rc: 0 r1: 15 r2: 0 r3: 0 	mov ['r2', '6']  ('mov r2,6'@2:0)
+  DEBUG   machine:simulation    TICK:   2 PC:   2 ADDR:   0 MEM_OUT: 0 rs: 0 rc: 0 r1: 15 r2: 6 r3: 0 	add ['rs', 'r1', 'r2']  ('add rs,r1,r2'@3:0)
+  DEBUG   machine:simulation    TICK:   3 PC:   3 ADDR:   0 MEM_OUT: 0 rs: 21 rc: 0 r1: 15 r2: 6 r3: 0 	sub ['rc', 'r1', 'r2']  ('sub rc,r1,r2'@4:0)
+  DEBUG   machine:simulation    TICK:   4 PC:   4 ADDR:   0 MEM_OUT: 0 rs: 21 rc: 9 r1: 15 r2: 6 r3: 0 	mul ['r3', 'r1', 'r2']  ('mul r3,r1,r2'@5:0)
+  DEBUG   machine:simulation    TICK:   5 PC:   5 ADDR:   0 MEM_OUT: 0 rs: 21 rc: 9 r1: 15 r2: 6 r3: 90 	mod ['r1', 'r1', 'r2']  ('mod r1,r1,r2'@6:0)
+  DEBUG   machine:simulation    TICK:   6 PC:   6 ADDR:   0 MEM_OUT: 0 rs: 21 rc: 9 r1: 3 r2: 6 r3: 90 	halt  ('halt'@7:0)
   INFO    machine:simulation    output_buffer: ''
 
 out_stdout: |
