@@ -394,10 +394,10 @@ jobs:
 
 Для алгоритмов реализованы golden-тесты:
 - [cat](./python/golden/cat.yml) -- вывод введённого сообщения на экран
-- hello -- вывод из памяти данных "Hello world!" на экран
-- hello_user -- приветствие представившегося пользователя
-- simple -- простой тест на работу арифметики
-- prob2
+- [hello](./python/golden/hello.yml) -- вывод из памяти данных "Hello world!" на экран
+- [hello_user](./python/golden/hello_user.yml) -- приветствие представившегося пользователя
+- [simple](./python/golden/simple.yml) -- простой тест на работу арифметики
+- [prob2](./python/golden/prob2.yml) -- ряд Фиббоначи
 
 ``` shell
 > python translator.py asm/cat.asm instructions.txt 
