@@ -260,7 +260,7 @@ jmp label   ; --> `jmp 123`, где 123 - номер инструкции пос
 
 
 ### DataPath
-
+![alt text](./python/Капибары.jpg)
 
 Реализован в классе `DataPath`.
 
