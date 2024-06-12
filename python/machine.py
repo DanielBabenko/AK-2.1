@@ -201,9 +201,6 @@ class DataPath:
 
 
 class ControlUnit:
-    """Блок управления процессора. Выполняет декодирование инструкций и
-    управляет состоянием модели процессора, включая обработку данных (DataPath).
-    """
 
     data_path: DataPath = None
     "Блок обработки данных."
@@ -245,11 +242,11 @@ class ControlUnit:
         if (opcode is Opcode.JNZ) | (opcode is Opcode.JNS):
             return self.execute_non_flag(instr, opcode, phase)
 
-        return False  # чтобы понимать, что текущая инструкция не управляет потоком выполнения
+        return False
 
     def execute_flag(self, instr, opcode, phase):
         addr, reg = instr["arg"]
-        # в 2 такта
+
         if phase == 1:
             self.data_path.signal_alu_l(reg)
             self.data_path.signal_alu_r("0")
@@ -268,7 +265,7 @@ class ControlUnit:
 
     def execute_non_flag(self, instr, opcode, phase):
         addr, reg = instr["arg"]
-        # в 2 такта
+
         if phase == 1:
             self.data_path.signal_alu_l(reg)
             self.data_path.signal_alu_r("0")
@@ -421,31 +418,12 @@ class ControlUnit:
         return True
 
     def decode_and_execute_instruction(self, phase):
-        """Основной цикл процессора. Декодирует и выполняет инструкцию.
-
-        Обработка инструкции:
-
-        1. Проверить `Opcode`.
-
-        2. Вызвать методы, имитирующие необходимые управляющие сигналы.
-
-        3. Продвинуть модельное время вперёд на один такт (`tick`).
-
-        4. (если необходимо) повторить шаги 2-3.
-
-        5. Перейти к следующей инструкции.
-
-        Обработка функций управления потоком исполнения вынесена в
-        `decode_and_execute_control_flow_instruction`.
-        """
         instr = self.program[self.data_path.program_counter]
 
         opcode = instr["opcode"]
 
         res = self.decode_and_execute_control_flow_instruction(instr, opcode, phase)
         if res is None or res:
-            # None - если мы не закончили выполенение инструкции
-            # True - если мы полностью выполнили инструкцию
             return res
 
         if opcode in {Opcode.RIGHT, Opcode.LEFT}:
@@ -503,17 +481,6 @@ class ControlUnit:
 
 
 def simulation(code: list, input_tokens: list, data_memory_size: int, limit: int, data: list):
-    """Подготовка модели и запуск симуляции процессора.
-
-    Длительность моделирования ограничена:
-
-    - количеством выполненных инструкций (`limit`);
-
-    - количеством данных ввода (`input_tokens`, если ввод используется), через
-      исключение `EOFError`;
-
-    - инструкцией `Halt`, через исключение `StopIteration`.
-    """
     alu = ALU()
 
     data_path = DataPath(alu, data_memory_size, input_tokens, data)
@@ -542,9 +509,6 @@ def simulation(code: list, input_tokens: list, data_memory_size: int, limit: int
 
 
 def main(code_file: str, input_file: str):
-    """Функция запуска модели процессора. Параметры -- имена файлов с машинным
-    кодом и с входными данными для симуляции.
-    """
     code, data = read_code(code_file)
 
     with open(input_file, encoding="utf-8") as file:
