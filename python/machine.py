@@ -164,6 +164,8 @@ class DataPath:
         if sel == Opcode.INPUT.value:
             if len(self.input_buffer) == 0:
                 self.registers["r7"] = 1
+            else:
+                self.registers["r7"] = 0
 
             self.data_address = self.new_data_address
 
@@ -360,6 +362,7 @@ class ControlUnit:
         args = instr["arg"]
         a, b = args
         assert a in self.data_path.registers, "unknown register"
+        assert a != self.data_path.registers["r7"], "r7 is a system register, you cannot change it!"
 
         if b.isdigit():
             self.data_path.imml = int(b)
