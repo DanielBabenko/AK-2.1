@@ -76,6 +76,7 @@ class DataPath:
             self.data_space = var_addr + 1
 
         self.registers = {
+            "r0": 0,
             "r1": 0,
             "r2": 0,
             "r3": 0,
@@ -409,6 +410,8 @@ class ControlUnit:
         return True
 
     def execute_input(self, instr, opcode, phase):
+        if self.data_path.registers["r7"] == 1:
+            raise EOFError
         if len(self.data_path.input_buffer) != 0:
             self.do_input()
         self.data_path.signal_wr(opcode.value)

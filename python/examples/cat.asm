@@ -1,13 +1,8 @@
-        ; Данный пример генерирует идентичный машинный код, что и программа на brainfuck:
-        ;
-        ; ,[.,]
-        ;
-        ; Каждый символ brainfuck соответствует одной инструкции на Asm.
-        input     ; ,
+input
 loop:
-        jz break  ; [
-        print     ; .
-        input     ; ,
-        jmp loop  ; ]
+    jnz break,r7
+    print
+    input
+    jmp loop
 break:
-        halt      ; конец файла
+    halt

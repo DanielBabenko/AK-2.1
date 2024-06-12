@@ -1,7 +1,10 @@
 in_source: |-
-  mov r1,1
-  mov r2,2
+  mov r1,15
+  mov r2,6
   add rs,r1,r2
+  sub rc,r1,r2
+  mul r3,r1,r2
+  mod r1,r1,r2
   halt
 
 in_stdin: |
@@ -13,12 +16,15 @@ out_log: |
   INFO    machine:simulation    output_buffer: ''
 
 out_stdout: |
-  source LoC: 4 code instr: 4
+  source LoC: 7 code instr: 7
   ============================================================
 
-  instr_counter:  3 ticks: 3
+  instr_counter:  6 ticks: 6
 out_code: |-
-  [{"index": 0, "opcode": "mov", "arg": ["r1", "1"], "term": [1, 0, "mov r1,1"]},
-   {"index": 1, "opcode": "mov", "arg": ["r2", "2"], "term": [2, 0, "mov r2,2"]},
+  [{"index": 0, "opcode": "mov", "arg": ["r1", "15"], "term": [1, 0, "mov r1,15"]},
+   {"index": 1, "opcode": "mov", "arg": ["r2", "6"], "term": [2, 0, "mov r2,6"]},
    {"index": 2, "opcode": "add", "arg": ["rs", "r1", "r2"], "term": [3, 0, "add rs,r1,r2"]},
-   {"index": 3, "opcode": "halt", "term": [4, 0, "halt"]}]
+   {"index": 3, "opcode": "sub", "arg": ["rc", "r1", "r2"], "term": [4, 0, "sub rc,r1,r2"]},
+   {"index": 4, "opcode": "mul", "arg": ["r3", "r1", "r2"], "term": [5, 0, "mul r3,r1,r2"]},
+   {"index": 5, "opcode": "mod", "arg": ["r1", "r1", "r2"], "term": [6, 0, "mod r1,r1,r2"]},
+   {"index": 6, "opcode": "halt", "term": [7, 0, "halt"]}]
