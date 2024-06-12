@@ -376,4 +376,3 @@ out_code: |-
    {"index": 11, "opcode": "mov", "arg": ["r2", "r3"], "term": [21, 0, "mov r2,r3"]},
    {"index": 12, "opcode": "jmp", "arg": 4, "term": [23, 0, "jmp loop"]},
    {"index": 13, "opcode": "halt", "term": [26, 0, "halt"]}]
-
