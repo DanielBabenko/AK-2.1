@@ -109,6 +109,18 @@ class DataPath:
     def signal_latch_data_register(self, value: int):
         self.data_register = value
 
+    def signal_latch_data_addr(self, sel):
+        assert sel in {Opcode.LEFT.value, Opcode.RIGHT.value}, "internal error, incorrect selector: {}".format(sel)
+
+        if sel == Opcode.LEFT.value:
+            self.data_address -= 1
+            self.new_data_address -= 1
+        elif sel == Opcode.RIGHT.value:
+            self.data_address += 1
+            self.new_data_address += 1
+
+        assert 0 <= self.data_address < self.data_memory_size, "out of memory: {}".format(self.data_address)
+
     def signal_latch_output_register(self):
         """Защёлкнуть слово из памяти (`oe` от Output Enable) и защёлкнуть его в
         аккумулятор. Сигнал `oe` выставляется неявно `ControlUnit`-ом.
@@ -394,6 +406,12 @@ class ControlUnit:
         res = self.decode_and_execute_control_flow_instruction(instr, opcode, phase)
         if res is None or res:
             return res
+
+        if opcode in {Opcode.RIGHT, Opcode.LEFT}:
+            self.data_path.signal_latch_data_addr(opcode.value)
+            self.data_path.signal_latch_program_counter(sel_next=True)
+            self.tick()
+            return True
 
         if opcode in {Opcode.MOD, Opcode.MUL, Opcode.ADD, Opcode.SUB}:
             return self.execute_binary_operation(instr, opcode, phase)
