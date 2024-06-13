@@ -315,6 +315,7 @@ class ControlUnit:
         args = instr["arg"]
         a, b, c = args
         assert a in self.data_path.registers, "unknown register"
+        assert c != "r7", "You cannot write in r7!"
 
         if b.isdigit():
             self.data_path.digit = int(b)
@@ -342,6 +343,7 @@ class ControlUnit:
         args = instr["arg"]
         a = args[0]
         assert a in self.data_path.registers, "unknown register"
+        assert a != "r7", "You operate with in r7!"
 
         self.data_path.signal_alu_l(a)
         self.data_path.signal_alu_r("0")
