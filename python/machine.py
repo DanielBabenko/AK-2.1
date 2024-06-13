@@ -109,18 +109,6 @@ class DataPath:
     def signal_latch_data_register(self, value: int):
         self.data_register = value
 
-    def signal_latch_data_addr(self, sel):
-        assert sel in {Opcode.LEFT.value, Opcode.RIGHT.value}, "internal error, incorrect selector: {}".format(sel)
-
-        if sel == Opcode.LEFT.value:
-            self.data_address -= 1
-            self.new_data_address -= 1
-        elif sel == Opcode.RIGHT.value:
-            self.data_address += 1
-            self.new_data_address += 1
-
-        assert 0 <= self.data_address < self.data_memory_size, "out of memory: {}".format(self.data_address)
-
     def signal_latch_output_register(self):
         """Защёлкнуть слово из памяти (`oe` от Output Enable) и защёлкнуть его в
         аккумулятор. Сигнал `oe` выставляется неявно `ControlUnit`-ом.
@@ -387,24 +375,6 @@ class ControlUnit:
         else:
             self.data_path.signal_latch_input_register(0)
 
-    def execute_store(self, instr, opcode, phase):
-        args: list[str]
-        args = instr["arg"]
-        a, b = args
-        b: str
-        if a.isdigit():
-            a = int(a)
-        else:
-            a = self.data_path.registers.get(a)
-        if b.isdigit():
-            self.data_path.data_memory[a] = int(b)
-        else:
-            self.data_path.data_memory[a] = self.data_path.registers.get(b)
-
-        self.data_path.signal_latch_program_counter(sel_next=True)
-        self.tick()
-        return True
-
     def execute_input(self, instr, opcode, phase):
         if self.data_path.registers["r7"] == 1:
             raise EOFError
@@ -425,12 +395,6 @@ class ControlUnit:
         if res is None or res:
             return res
 
-        if opcode in {Opcode.RIGHT, Opcode.LEFT}:
-            self.data_path.signal_latch_data_addr(opcode.value)
-            self.data_path.signal_latch_program_counter(sel_next=True)
-            self.tick()
-            return True
-
         if opcode in {Opcode.MOD, Opcode.MUL, Opcode.ADD, Opcode.SUB}:
             return self.execute_binary_operation(instr, opcode, phase)
 
@@ -440,7 +404,6 @@ class ControlUnit:
         opcode2handler = {
             Opcode.MOV: self.execute_mov,
             Opcode.PRINT_CHAR: self.execute_print_char,
-            Opcode.STORE: self.execute_store,
             Opcode.PRINT: self.execute_print,
             Opcode.INPUT: self.execute_input
         }

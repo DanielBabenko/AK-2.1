@@ -30,13 +30,7 @@ class Opcode(str, Enum):
 
     ADD_STR = "add_str"
 
-    STORE = "store"
-
-    RIGHT = "right"
-    LEFT = "left"
-
     PRINT_CHAR = "print_char"
-
     WORD = "word"
 
     def __str__(self):
