@@ -55,8 +55,7 @@ class DataPath:
 
     registers = None
 
-    imml: int = None
-    immr: int = None
+    digit: int = None
 
     alu_l_value: int = None
     alu_r_value: int = None
@@ -133,20 +132,20 @@ class DataPath:
         self.data_space += 1
 
     def signal_latch_r(self, register_name: str, value):
-        # для r1, ..., r7 (регистров общего назначения)
+        # для r0, ..., r6 (регистров общего назначения)
         self.registers[register_name] = value
 
     def signal_alu_l(self, sel: str):
-        if sel == "imml":
-            self.alu_l_value = self.imml
+        if sel == "digit":
+            self.alu_l_value = self.digit
         else:
             self.alu_l_value = self.input_register if sel == "ir" else self.registers.get(sel)
 
     def signal_alu_r(self, sel: str):
         if sel == "0":
             self.alu_r_value = 0
-        elif sel == "immr":
-            self.alu_r_value = self.immr
+        elif sel == "digit":
+            self.alu_r_value = self.digit
         else:
             self.alu_r_value = self.input_register if sel == "ir" else self.registers.get(sel)
 
@@ -318,14 +317,14 @@ class ControlUnit:
         assert a in self.data_path.registers, "unknown register"
 
         if b.isdigit():
-            self.data_path.imml = int(b)
-            self.data_path.signal_alu_l("imml")
+            self.data_path.digit = int(b)
+            self.data_path.signal_alu_l("digit")
         else:
             self.data_path.signal_alu_l(b)
 
         if c.isdigit():
-            self.data_path.immr = int(c)
-            self.data_path.signal_alu_r("immr")
+            self.data_path.digit = int(c)
+            self.data_path.signal_alu_r("digit")
         else:
             self.data_path.signal_alu_r(c)
 
@@ -360,14 +359,14 @@ class ControlUnit:
         args = instr["arg"]
         a, b = args
         assert a in self.data_path.registers, "unknown register"
-        assert a != self.data_path.registers["r7"], "r7 is a system register, you cannot change it!"
+        assert a != "r7", "You cannot write in r7!"
 
         if b.isdigit():
-            self.data_path.imml = int(b)
-            self.data_path.signal_alu_l("imml")
+            self.data_path.digit = int(b)
+            self.data_path.signal_alu_l("digit")
         elif b == "addr":
-            self.data_path.imml = self.data_path.new_data_address
-            self.data_path.signal_alu_l("imml")
+            self.data_path.digit = self.data_path.new_data_address
+            self.data_path.signal_alu_l("digit")
         else:  # register
             self.data_path.signal_alu_l(b)
 
