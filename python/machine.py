@@ -82,7 +82,15 @@ class DataPath:
             "r4": 0,
             "rc": 0,  # "r5": 0,
             "rs": 0,  # "r6": 0,
-            "r7": 0,
+            "r7": 0,  # I\O control
+            "r8": 0,
+            "r9": 0,
+            "r10": 0,
+            "r11": 0,
+            "r12": 0,
+            "r13": 0,
+            "r14": 0,
+            "r15": 0
         }
 
         self.alu = alu
@@ -132,14 +140,13 @@ class DataPath:
         self.data_space += 1
 
     def signal_latch_r(self, register_name: str, value):
-        # для r0, ..., r6 (регистров общего назначения)
         self.registers[register_name] = value
 
     def signal_alu_l(self, sel: str):
         if sel == "digit":
             self.alu_l_value = self.digit
         else:
-            self.alu_l_value = self.input_register if sel == "ir" else self.registers.get(sel)
+            self.alu_l_value = self.registers.get(sel)
 
     def signal_alu_r(self, sel: str):
         if sel == "0":
@@ -147,7 +154,7 @@ class DataPath:
         elif sel == "digit":
             self.alu_r_value = self.digit
         else:
-            self.alu_r_value = self.input_register if sel == "ir" else self.registers.get(sel)
+            self.alu_r_value = self.registers.get(sel)
 
     def signal_alu_op(self, sel: Opcode):
         res = self.alu.calc(sel, self.alu_l_value, self.alu_r_value)
@@ -178,7 +185,6 @@ class DataPath:
 
             if len(self.input_buffer) > 0:
                 self.input_buffer.pop(0)
-            self.new_data_address += 1
 
     def signal_output(self):
         """Вывести значение аккумулятора в порт вывода.
@@ -343,7 +349,7 @@ class ControlUnit:
         args = instr["arg"]
         a = args[0]
         assert a in self.data_path.registers, "unknown register"
-        assert a != "r7", "You operate with in r7!"
+        assert a != "r7", "You cannot operate with in r7!"
 
         self.data_path.signal_alu_l(a)
         self.data_path.signal_alu_r("0")

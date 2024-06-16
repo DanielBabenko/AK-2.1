@@ -3,6 +3,7 @@ in_source: |-
   loop:
       jnz break,r7
       print
+      right
       input
       jmp loop
   break:
