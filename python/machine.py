@@ -380,16 +380,19 @@ class ControlUnit:
         self.tick()
         return True
 
-    def do_input(self):
-        next_token = self.data_path.input_buffer[0]
-        if next_token:
-            self.data_path.signal_latch_input_register(ord(next_token))
-        else:
-            self.data_path.signal_latch_input_register(0)
-
     def execute_input(self, instr, opcode, phase):
-        if len(self.data_path.input_buffer) != 0:
-            self.do_input()
+        if phase == 1:
+            if len(self.data_path.input_buffer) != 0:
+                next_token = self.data_path.input_buffer[0]
+                if next_token:
+                    self.data_path.signal_latch_input_register(ord(next_token))
+                else:
+                    self.data_path.signal_latch_input_register(0)
+
+            else:
+                raise EOFError
+            return None
+
         self.data_path.signal_wr(opcode.value)
         self.data_path.signal_latch_program_counter(sel_next=True)
         self.tick()
