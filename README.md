@@ -168,7 +168,7 @@ jmp label   ; --> `jmp 123`, где 123 - номер инструкции пос
 | dec        | 1             |
 | right      | 1             |
 | left       | 1             |
-| input      | 1             |
+| input      | 2             |
 | print      | 2             |
 | jmp        | 1             |
 | jz         | 2             |
