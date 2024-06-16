@@ -82,7 +82,7 @@ class DataPath:
             "r4": 0,
             "rc": 0,  # "r5": 0,
             "rs": 0,  # "r6": 0,
-            "r7": 0,  # I\O control
+            "r7": 0,
             "r8": 0,
             "r9": 0,
             "r10": 0,
@@ -169,11 +169,6 @@ class DataPath:
         }, "internal error, incorrect selector: {}".format(sel)
 
         if sel == Opcode.INPUT.value:
-            if len(self.input_buffer) == 0:
-                self.registers["r7"] = 1
-            else:
-                self.registers["r7"] = 0
-
             self.data_address = self.new_data_address
 
             symbol_code = self.input_register
@@ -321,7 +316,6 @@ class ControlUnit:
         args = instr["arg"]
         a, b, c = args
         assert a in self.data_path.registers, "unknown register"
-        assert c != "r7", "You cannot write in r7!"
 
         if b.isdigit():
             self.data_path.digit = int(b)
@@ -349,7 +343,6 @@ class ControlUnit:
         args = instr["arg"]
         a = args[0]
         assert a in self.data_path.registers, "unknown register"
-        assert a != "r7", "You cannot operate with in r7!"
 
         self.data_path.signal_alu_l(a)
         self.data_path.signal_alu_r("0")
@@ -367,13 +360,12 @@ class ControlUnit:
         args = instr["arg"]
         a, b = args
         assert a in self.data_path.registers, "unknown register"
-        assert a != "r7", "You cannot write in r7!"
 
         if b.isdigit():
             self.data_path.digit = int(b)
             self.data_path.signal_alu_l("digit")
-        elif b == "addr":
-            self.data_path.digit = self.data_path.new_data_address
+        elif b == "input_size":
+            self.data_path.digit = len(self.data_path.input_buffer)
             self.data_path.signal_alu_l("digit")
         else:  # register
             self.data_path.signal_alu_l(b)
@@ -396,8 +388,6 @@ class ControlUnit:
             self.data_path.signal_latch_input_register(0)
 
     def execute_input(self, instr, opcode, phase):
-        if self.data_path.registers["r7"] == 1:
-            raise EOFError
         if len(self.data_path.input_buffer) != 0:
             self.do_input()
         self.data_path.signal_wr(opcode.value)

@@ -9,54 +9,52 @@ in_source: |-
   mov r1,19
   mov r2,name
   mov r3,0
-  mov r7,input_size
-  
+
   ask:
     jz break_ask,r1
     inc r2
     print_char r2
     dec r1
     jmp ask
-  
+
   break_ask:
-      jz break_input,r7
       input
       right
+      jz break_input,r7
       inc r3
-      dec r7
       jmp break_ask
-  
+
   break_input:
     mov r1,6
     mov r2,hello_start
-  
+
   hello1:
     jz break_hello1,r1
     inc r2
     print_char r2
     dec r1
     jmp hello1
-  
+
   break_hello1:
     mov r1,r3
-  
+
   hello2:
     jz break_hello2,r1
     print
     dec r1
     jmp hello2
-  
+
   break_hello2:
     mov r1,1
     mov r2,hello_end
-  
+
   hello3:
     jz break_hello3,r1
     inc r2
     print_char r2
     dec r1
     jmp hello3
-  
+
   break_hello3:
     halt
 
@@ -353,43 +351,41 @@ out_log: |
   DEBUG   machine:simulation    TICK: 205 PC:  32 ADDR:  28 MEM_OUT: 33 rs: 0 rc: 0 r1: 0 r2: 28 r3: 6 	halt  ('halt'@58:0)
   INFO    machine:simulation    output_buffer: 'What is your name? Hello Daniel!'
 out_stdout: |
-  source LoC: 60 code instr: 35
+  source LoC: 58 code instr: 33
   ============================================================
   What is your name? Hello Daniel!
-  instr_counter:  204 ticks: 210
+  instr_counter:  199 ticks: 205
 out_code: |-
   [{"index": 0, "opcode": "mov", "arg": ["r1", "19"], "term": [8, 0, "mov r1,19"]},
    {"index": 1, "opcode": "mov", "arg": ["r2", "0"], "term": [9, 0, "mov r2,name"]},
    {"index": 2, "opcode": "mov", "arg": ["r3", "0"], "term": [10, 0, "mov r3,0"]},
-   {"index": 3, "opcode": "mov", "arg": ["r7", "input_size"], "term": [11, 0, "mov r7,input_size"]},
-   {"index": 4, "opcode": "jz", "arg": [9, "r1"], "term": [14, 0, "jz break_ask,r1"]},
-   {"index": 5, "opcode": "inc", "arg": ["r2"], "term": [15, 0, "inc r2"]},
-   {"index": 6, "opcode": "print_char", "arg": ["r2"], "term": [16, 0, "print_char r2"]},
-   {"index": 7, "opcode": "dec", "arg": ["r1"], "term": [17, 0, "dec r1"]},
-   {"index": 8, "opcode": "jmp", "arg": 4, "term": [18, 0, "jmp ask"]},
-   {"index": 9, "opcode": "jz", "arg": [15, "r7"], "term": [21, 0, "jz break_input,r7"]},
-   {"index": 10, "opcode": "input", "term": [22, 0, "input"]},
-   {"index": 11, "opcode": "right", "term": [23, 0, "right"]},
-   {"index": 12, "opcode": "inc", "arg": ["r3"], "term": [24, 0, "inc r3"]},
-   {"index": 13, "opcode": "dec", "arg": ["r7"], "term": [25, 0, "dec r7"]},
-   {"index": 14, "opcode": "jmp", "arg": 9, "term": [26, 0, "jmp break_ask"]},
-   {"index": 15, "opcode": "mov", "arg": ["r1", "6"], "term": [29, 0, "mov r1,6"]},
-   {"index": 16, "opcode": "mov", "arg": ["r2", "20"], "term": [30, 0, "mov r2,hello_start"]},
-   {"index": 17, "opcode": "jz", "arg": [22, "r1"], "term": [33, 0, "jz break_hello1,r1"]},
-   {"index": 18, "opcode": "inc", "arg": ["r2"], "term": [34, 0, "inc r2"]},
-   {"index": 19, "opcode": "print_char", "arg": ["r2"], "term": [35, 0, "print_char r2"]},
-   {"index": 20, "opcode": "dec", "arg": ["r1"], "term": [36, 0, "dec r1"]},
-   {"index": 21, "opcode": "jmp", "arg": 17, "term": [37, 0, "jmp hello1"]},
-   {"index": 22, "opcode": "mov", "arg": ["r1", "r3"], "term": [40, 0, "mov r1,r3"]},
-   {"index": 23, "opcode": "jz", "arg": [27, "r1"], "term": [43, 0, "jz break_hello2,r1"]},
-   {"index": 24, "opcode": "print", "term": [44, 0, "print"]},
-   {"index": 25, "opcode": "dec", "arg": ["r1"], "term": [45, 0, "dec r1"]},
-   {"index": 26, "opcode": "jmp", "arg": 23, "term": [46, 0, "jmp hello2"]},
-   {"index": 27, "opcode": "mov", "arg": ["r1", "1"], "term": [49, 0, "mov r1,1"]},
-   {"index": 28, "opcode": "mov", "arg": ["r2", "27"], "term": [50, 0, "mov r2,hello_end"]},
-   {"index": 29, "opcode": "jz", "arg": [34, "r1"], "term": [53, 0, "jz break_hello3,r1"]},
-   {"index": 30, "opcode": "inc", "arg": ["r2"], "term": [54, 0, "inc r2"]},
-   {"index": 31, "opcode": "print_char", "arg": ["r2"], "term": [55, 0, "print_char r2"]},
-   {"index": 32, "opcode": "dec", "arg": ["r1"], "term": [56, 0, "dec r1"]},
-   {"index": 33, "opcode": "jmp", "arg": 29, "term": [57, 0, "jmp hello3"]},
-   {"index": 34, "opcode": "halt", "term": [60, 0, "halt"]}]
+   {"index": 3, "opcode": "jz", "arg": [8, "r1"], "term": [13, 0, "jz break_ask,r1"]},
+   {"index": 4, "opcode": "inc", "arg": ["r2"], "term": [14, 0, "inc r2"]},
+   {"index": 5, "opcode": "print_char", "arg": ["r2"], "term": [15, 0, "print_char r2"]},
+   {"index": 6, "opcode": "dec", "arg": ["r1"], "term": [16, 0, "dec r1"]},
+   {"index": 7, "opcode": "jmp", "arg": 3, "term": [17, 0, "jmp ask"]},
+   {"index": 8, "opcode": "input", "term": [20, 0, "input"]},
+   {"index": 9, "opcode": "right", "term": [21, 0, "right"]},
+   {"index": 10, "opcode": "jz", "arg": [13, "r7"], "term": [22, 0, "jz break_input,r7"]},
+   {"index": 11, "opcode": "inc", "arg": ["r3"], "term": [23, 0, "inc r3"]},
+   {"index": 12, "opcode": "jmp", "arg": 8, "term": [24, 0, "jmp break_ask"]},
+   {"index": 13, "opcode": "mov", "arg": ["r1", "6"], "term": [27, 0, "mov r1,6"]},
+   {"index": 14, "opcode": "mov", "arg": ["r2", "20"], "term": [28, 0, "mov r2,hello_start"]},
+   {"index": 15, "opcode": "jz", "arg": [20, "r1"], "term": [31, 0, "jz break_hello1,r1"]},
+   {"index": 16, "opcode": "inc", "arg": ["r2"], "term": [32, 0, "inc r2"]},
+   {"index": 17, "opcode": "print_char", "arg": ["r2"], "term": [33, 0, "print_char r2"]},
+   {"index": 18, "opcode": "dec", "arg": ["r1"], "term": [34, 0, "dec r1"]},
+   {"index": 19, "opcode": "jmp", "arg": 15, "term": [35, 0, "jmp hello1"]},
+   {"index": 20, "opcode": "mov", "arg": ["r1", "r3"], "term": [38, 0, "mov r1,r3"]},
+   {"index": 21, "opcode": "jz", "arg": [25, "r1"], "term": [41, 0, "jz break_hello2,r1"]},
+   {"index": 22, "opcode": "print", "term": [42, 0, "print"]},
+   {"index": 23, "opcode": "dec", "arg": ["r1"], "term": [43, 0, "dec r1"]},
+   {"index": 24, "opcode": "jmp", "arg": 21, "term": [44, 0, "jmp hello2"]},
+   {"index": 25, "opcode": "mov", "arg": ["r1", "1"], "term": [47, 0, "mov r1,1"]},
+   {"index": 26, "opcode": "mov", "arg": ["r2", "27"], "term": [48, 0, "mov r2,hello_end"]},
+   {"index": 27, "opcode": "jz", "arg": [32, "r1"], "term": [51, 0, "jz break_hello3,r1"]},
+   {"index": 28, "opcode": "inc", "arg": ["r2"], "term": [52, 0, "inc r2"]},
+   {"index": 29, "opcode": "print_char", "arg": ["r2"], "term": [53, 0, "print_char r2"]},
+   {"index": 30, "opcode": "dec", "arg": ["r1"], "term": [54, 0, "dec r1"]},
+   {"index": 31, "opcode": "jmp", "arg": 27, "term": [55, 0, "jmp hello3"]},
+   {"index": 32, "opcode": "halt", "term": [58, 0, "halt"]}]

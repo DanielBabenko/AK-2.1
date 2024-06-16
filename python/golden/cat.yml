@@ -1,10 +1,12 @@
 in_source: |-
+  mov r7,input_size
   input
   loop:
-      jnz break,r7
+      jz break,r7
       print
       right
       input
+      dec r7
       jmp loop
   break:
       halt
