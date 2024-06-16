@@ -380,6 +380,34 @@ class ControlUnit:
         self.tick()
         return True
 
+    def execute_load(self, instr, opcode, phase):
+        args: list[str]
+        args = instr["arg"]
+        a, b = args
+
+        assert a.isdigit() and b in self.data_path.registers, "Load should be from data memory to register!"
+
+        a = self.data_path.data_memory[a]
+        self.data_path.registers[b] = a
+
+        self.data_path.signal_latch_program_counter(sel_next=True)
+        self.tick()
+        return True
+
+    def execute_store(self, instr, opcode, phase):
+        args: list[str]
+        args = instr["arg"]
+        a, b = args
+
+        assert a in self.data_path.registers and b.isdigit(), "Store should be from register to data memory!"
+
+        a = self.data_path.registers.get(a)
+        self.data_path.data_memory[b] = a
+
+        self.data_path.signal_latch_program_counter(sel_next=True)
+        self.tick()
+        return True
+
     def execute_input(self, instr, opcode, phase):
         if phase == 1:
             if len(self.data_path.input_buffer) != 0:
@@ -422,6 +450,8 @@ class ControlUnit:
 
         opcode2handler = {
             Opcode.MOV: self.execute_mov,
+            Opcode.LOAD: self.execute_load,
+            Opcode.STORE: self.execute_store,
             Opcode.PRINT_CHAR: self.execute_print_char,
             Opcode.PRINT: self.execute_print,
             Opcode.INPUT: self.execute_input

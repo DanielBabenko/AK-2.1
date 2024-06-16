@@ -22,6 +22,8 @@ class Opcode(str, Enum):
     HALT = "halt"
 
     MOV = "mov"
+    LOAD = "load"
+    STORE = "store"
 
     ADD = "add"
     SUB = "sub"
