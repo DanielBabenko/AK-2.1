@@ -242,7 +242,7 @@ jmp label   ; --> `jmp 123`, где 123 - номер инструкции пос
 
 
 ### DataPath
-![alt text](python/images/DataPath.png)
+![alt text](python/images/DataPath2.png)
 
 Реализован в классе `DataPath`.
 
