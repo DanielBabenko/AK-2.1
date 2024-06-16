@@ -385,7 +385,7 @@ class ControlUnit:
         args = instr["arg"]
         a, b = args
 
-        assert a.isdigit() and b in self.data_path.registers, "Load should be from data memory to register!"
+        assert (a.isdigit() and b in self.data_path.registers), "Load should be from data memory to register!"
 
         a = self.data_path.data_memory[a]
         self.data_path.registers[b] = a
@@ -399,7 +399,7 @@ class ControlUnit:
         args = instr["arg"]
         a, b = args
 
-        assert a in self.data_path.registers and b.isdigit(), "Store should be from register to data memory!"
+        assert (a in self.data_path.registers and b.isdigit()), "Store should be from register to data memory!"
 
         a = self.data_path.registers.get(a)
         self.data_path.data_memory[b] = a
